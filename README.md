@@ -1,0 +1,75 @@
+# 기어 앤 포션 (Gear & Potion: Automate the Atelier)
+
+2D 그리드 기반 **마도 자동화 공방 + 포션 상점 타이쿤** — Unity 6 (6000.3.11f1) · 2D URP · C# 1인 개발 프로젝트.
+Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으로 만든 **수직 슬라이스(v0.1.0)** 입니다.
+
+뒷방(공방)에서는 투입구 → 분쇄기 → 추출기 → 여과기 → 병입기가 벨트로 이어져 돌아가고,
+벽 너머 앞가게(매장)에서는 손님이 진열대의 포션을 사 갑니다.
+
+## 실행 방법
+
+1. Unity Hub에서 이 폴더를 열기 (Unity **6000.3.11f1**)
+2. 메뉴 **Gear & Potion → Setup Project** 실행 (데이터 에셋·씬·빌드 설정 생성, 다시 실행해도 안전)
+3. `Assets/_Project/Scenes/Atelier.unity` 열고 Play
+4. 빌드: **Gear & Potion → Build Windows** → `Builds/Windows/GearPotion.exe`
+
+아트·사운드 에셋 없이 동작합니다. 스프라이트는 런타임 SDF로, 효과음은 합성으로 생성됩니다
+(실제 32x32 픽셀 아트로 교체할 때는 `Sprites.cs`의 프로퍼티만 바꾸면 됩니다).
+
+## 조작
+
+| 입력 | 동작 |
+|---|---|
+| 하단 독 클릭 / 1~4 | 설비 선택 (물류 · 가공·연성 · 상점 · 마력) |
+| 좌클릭 | 배치 (벨트는 드래그로 연속 배치, 끌어간 방향으로 자동 회전) |
+| R / Shift+R | 회전 |
+| 우클릭 (드래그) | 철거 (75% 환불) · 선택 취소 |
+| X / Q | 철거 모드 / 스포이트 |
+| 설비 클릭 | 투입구 재료 · 진열대 가격 배율 · 분류기 조건 변경 |
+| Space · 1x/2x/3x | 일시정지 · 배속 |
+| Tab | 효율 히트맵 뷰 (초록 가동 / 노랑 재료 대기 / 빨강 막힘·마력 부족) |
+| T · F1 | 연구 · 도움말 |
+| WASD · 휠 · 휠버튼 드래그 · Home | 카메라 |
+
+## 구현 범위 (GDD 대비)
+
+| GDD 항목 | 상태 |
+|---|---|
+| 6.1 물리 없는 결정론적 그리드 틱(초당 10틱) + 시각 보간 | ✅ `FactoryGrid`, `ItemViews` |
+| 3.1 그리드 배치/회전/철거, 벨트·분배기·스마트 분류기 | ✅ (투입 로봇팔은 생략 — 벨트가 설비에 직접 투입) |
+| 3.1 공방 14x10(공방 14x6 + 매장 14x4), 부지 확장 | ✅ 폭 14 → 20 → 26 → 32 |
+| 3.2 5대 원소 벡터 · 불순물 · 분쇄/추출/여과/증류/합성/병입 | ✅ `Alchemy.cs` |
+| 3.2 순도 등급 C~SSS 및 가격 배율 | ✅ |
+| 3.2 폐기물 재활용 (슬러지 → 슬라임 배양조 → 마력 결정) | ✅ |
+| 3.3 진열대(나무·냉장·VIP) + 벨트 자동 보충, 가격 배율 | ✅ |
+| 3.3 손님 FSM (입장 → 가성비 판정 → 결제 → 별점) · 평판 → 방문객 수 | ✅ 주민·초보/정예 모험가·학회 감정사·암시장 브로커 |
+| 2.2 하루 4페이즈 · 왕국 뉴스(트렌드/시세) · 심야 손익계산서 | ✅ |
+| 마력 전력망 (공급/소비, 부족 시 감속, 유지비) | ✅ (룬 전선 배선은 생략 — 전역 전력망) |
+| 연구 트리 (RP 해금) | ✅ 설비 8종 + 원재료 5종 |
+| 6.3 JSON 세이브 (매일 06:00 자동 저장, 이어하기) | ✅ |
+| 6.2 ScriptableObject 데이터 주도 설계 | ✅ `IngredientSO`/`MachineSO`/`PotionSO`/`CustomerProfileSO` |
+| 3.1 액체 배관 레이어 · 오버클럭 태엽 · 과열/냉각 | ⏳ 다음 단계 |
+| 3.3 4대 세력 대량 납품 계약 · 비밀 지하실 | ⏳ 다음 단계 (암시장 의심 수치/검문은 구현) |
+| 5.1 청사진 복사/붙여넣기 · 배관 투시 뷰 | ⏳ 다음 단계 |
+| 2D URP 발광 조명 · 실제 아트/사운드 | ⏳ 폴리싱 단계 |
+
+## 콘텐츠
+
+- 원재료 7종: 이슬 맺힌 약초, 화염 뿌리, 바람 민들레 홀씨, 구리빛 마광석, 동굴 발광 버섯, 얼음 정령의 파편, 용암 도마뱀의 독샘
+- 포션 7종(+실패작): 하급 치유 물약, 화염 활력제, 강철 피부 포션, 고순도 마나 엘릭서, 폭풍 질주 포션, 드래곤 브레스 영약, 액상 현자의 돌 (탁한 물약)
+- 설비 19종 — 밸런스 원본은 `Assets/_Project/Editor/DefaultContent.cs` (Setup Project 실행 시 에셋에 반영)
+
+## 프로젝트 구조
+
+```
+Assets/_Project/
+  Editor/        ProjectSetup(메뉴·빌드), DefaultContent(밸런스 테이블)
+  Scripts/Data/  Elements, ScriptableObject 정의
+  Scripts/Factory/ FactoryGrid(틱 매니저), Building(전 설비), Alchemy, Item, BuildController
+  Scripts/Shop/  Customer(FSM), CustomerManager
+  Scripts/Core/  GameManager, GameClock, Economy, Market, Progression(연구·도감·목표), SaveSystem, Sprites, Sfx, Fx
+  Scripts/UI/    HUD, HUD.Panels(타이틀·정산·연구·도움말), UIFactory
+  Scripts/Dev/   DevCommandLine(자동 테스트 플래그), DemoLayout
+```
+
+개발용 실행 플래그: `-autostart -continue -demo -timescale N -autonext -unlockall -gold N -rp N -nosave -shots 3,30 -shotdir 경로 -quitafter 초 -research`

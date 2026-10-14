@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_CRATE
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_CRATE
+  displayName: "\uC6D0\uC7AC\uB8CC \uD22C\uC785\uAD6C"
+  shortName: "\uD22C\uC785"
+  kind: 3
+  category: 0
+  zone: 0
+  size: {x: 1, y: 1}
+  tier: 1
+  cost: 20
+  mana: 0
+  processTime: 2
+  param: 0
+  priceBonus: 1
+  color: {r: 0.5411765, g: 0.41568628, b: 0.22745098, a: 1}
+  description: "\uC120\uD0DD\uD55C \uC6D0\uC7AC\uB8CC\uB97C \uB9E4\uC785\uAC00\uB97C
+    \uC9C0\uBD88\uD558\uACE0 2\uCD08\uB9C8\uB2E4 \uBC30\uCD9C. \uD074\uB9AD\uD574
+    \uC7AC\uB8CC \uBCC0\uACBD"
+  unlockedByDefault: 1
+  researchCost: 0
+  removable: 1

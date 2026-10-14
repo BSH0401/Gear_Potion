@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_EXTRACTOR
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_EXTRACTOR
+  displayName: "\uC99D\uAE30 \uC555\uCC29 \uCD94\uCD9C\uAE30"
+  shortName: "\uCD94\uCD9C"
+  kind: 5
+  category: 1
+  zone: 0
+  size: {x: 2, y: 2}
+  tier: 1
+  cost: 100
+  mana: 5
+  processTime: 4
+  param: 0
+  priceBonus: 1
+  color: {r: 0.22745098, g: 0.41568628, b: 0.2901961, a: 1}
+  description: "\uC57D\uCD08\xB7\uBD84\uB9D0 \u2192 \uC561\uCCB4 \uC6D0\uC561. \uC6D0\uC18C\uC640
+    \uBD88\uC21C\uBB3C \uC720\uC9C0"
+  unlockedByDefault: 1
+  researchCost: 0
+  removable: 1

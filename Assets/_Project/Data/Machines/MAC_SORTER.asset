@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_SORTER
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_SORTER
+  displayName: "\uC2A4\uB9C8\uD2B8 \uB4F1\uAE09 \uBD84\uB958\uAE30"
+  shortName: "\uBD84\uB958"
+  kind: 2
+  category: 0
+  zone: 2
+  size: {x: 1, y: 1}
+  tier: 2
+  cost: 150
+  mana: 2
+  processTime: 0
+  param: 0
+  priceBonus: 1
+  color: {r: 0.22745098, g: 0.41960785, b: 0.41960785, a: 1}
+  description: "\uC870\uAC74(\uC2AC\uB7EC\uC9C0\xB7\uB4F1\uAE09\xB7\uC885\uB958)\uC5D0
+    \uB9DE\uB294 \uC544\uC774\uD15C\uC740 \uC55E\uC73C\uB85C, \uB098\uBA38\uC9C0\uB294
+    \uC88C/\uC6B0\uB85C. \uD074\uB9AD\uD574 \uC870\uAC74 \uBCC0\uACBD"
+  unlockedByDefault: 0
+  researchCost: 120
+  removable: 1

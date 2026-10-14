@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_CORE
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_CORE
+  displayName: "\uB9C8\uB098 \uCF54\uC5B4"
+  shortName: "\uB9C8\uB098 \uCF54\uC5B4"
+  kind: 14
+  category: 3
+  zone: 0
+  size: {x: 2, y: 2}
+  tier: 1
+  cost: 200
+  mana: 30
+  processTime: 0
+  param: 0
+  priceBonus: 1
+  color: {r: 0.16470589, g: 0.3529412, b: 0.5411765, a: 1}
+  description: "\uB9C8\uB825 \uC804\uB825\uB9DD\uC5D0 30 MP/s \uACF5\uAE09. \uD558\uB8E8
+    \uC720\uC9C0\uBE44 30G"
+  unlockedByDefault: 1
+  researchCost: 0
+  removable: 1

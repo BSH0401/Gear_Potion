@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_SHELF
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_SHELF
+  displayName: "\uB098\uBB34 \uC9C4\uC5F4\uB300"
+  shortName: "\uC9C4\uC5F4\uB300"
+  kind: 13
+  category: 2
+  zone: 1
+  size: {x: 1, y: 1}
+  tier: 1
+  cost: 30
+  mana: 0
+  processTime: 0
+  param: 4
+  priceBonus: 1
+  color: {r: 0.5411765, g: 0.3529412, b: 0.19607843, a: 1}
+  description: "\uD3EC\uC158 4\uAC1C \uC9C4\uC5F4. \uB4A4\uCABD(\uC704)\uC5D0\uC11C
+    \uBCA8\uD2B8\uB85C \uC7AC\uACE0 \uC790\uB3D9 \uBCF4\uCDA9. \uD074\uB9AD\uD574
+    \uAC00\uACA9 \uBC30\uC728 \uBCC0\uACBD"
+  unlockedByDefault: 1
+  researchCost: 0
+  removable: 1

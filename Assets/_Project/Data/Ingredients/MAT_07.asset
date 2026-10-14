@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35ff7aa27641f4e44868396ee5ae38a9, type: 3}
+  m_Name: MAT_07
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.IngredientSO
+  id: MAT_07
+  displayName: "\uC6A9\uC554 \uB3C4\uB9C8\uBC40\uC758 \uB3C5\uC0D8"
+  category: "\uC0DD\uCCB4"
+  cost: 40
+  elements:
+    ignis: 30
+    aqua: 0
+    ventus: 0
+    terra: 0
+    aether: 15
+  impurity: 45
+  color: {r: 0.9098039, g: 0.25490198, b: 0.22745098, a: 1}
+  crushBonus: 0
+  extractBonusChance: 0
+  note: "\uC815\uC81C \uC2DC \uCD5C\uACE0\uAE09 \uC601\uC57D, \uBBF8\uC815\uC81C
+    \uC2DC \uB9F9\uB3C5"
+  unlockedByDefault: 0
+  researchCost: 250

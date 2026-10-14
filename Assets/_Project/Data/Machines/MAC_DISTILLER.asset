@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_DISTILLER
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_DISTILLER
+  displayName: "\uC99D\uB958\uD0D1"
+  shortName: "\uC99D\uB958"
+  kind: 7
+  category: 1
+  zone: 0
+  size: {x: 1, y: 2}
+  tier: 2
+  cost: 160
+  mana: 6
+  processTime: 4
+  param: 0
+  priceBonus: 1
+  color: {r: 0.3529412, g: 0.2901961, b: 0.47843137, a: 1}
+  description: "\uBCF4\uC870 \uC6D0\uC18C\uB97C \uC81C\uAC70\uD558\uACE0 \uAC00\uC7A5
+    \uB192\uC740 \uC6D0\uC18C\uB9CC 1.5\uBC30 \uB18D\uCD95"
+  unlockedByDefault: 0
+  researchCost: 120
+  removable: 1

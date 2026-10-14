@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_COUNTER
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_COUNTER
+  displayName: "\uB9C8\uB3C4 \uC790\uB3D9 \uACC4\uC0B0\uB300"
+  shortName: "\uACC4\uC0B0\uB300"
+  kind: 15
+  category: 2
+  zone: 1
+  size: {x: 2, y: 1}
+  tier: 1
+  cost: 0
+  mana: 0
+  processTime: 0
+  param: 0
+  priceBonus: 1
+  color: {r: 0.3529412, g: 0.22745098, b: 0.16470589, a: 1}
+  description: "\uC190\uB2D8\uC774 \uACB0\uC81C\uD558\uB294 \uACF3"
+  unlockedByDefault: 1
+  researchCost: 0
+  removable: 0

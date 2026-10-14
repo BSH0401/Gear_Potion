@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_COLDSHELF
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_COLDSHELF
+  displayName: "\uB0C9\uC7A5 \uB9C8\uBC95 \uC9C4\uC5F4\uB300"
+  shortName: "\uB0C9\uC7A5"
+  kind: 13
+  category: 2
+  zone: 1
+  size: {x: 1, y: 1}
+  tier: 2
+  cost: 90
+  mana: 0
+  processTime: 0
+  param: 4
+  priceBonus: 1.15
+  color: {r: 0.2901961, g: 0.47843137, b: 0.6039216, a: 1}
+  description: "\uC2E0\uC120\uB3C4 \uC720\uC9C0\uB85C \uD310\uB9E4\uAC00 +15%"
+  unlockedByDefault: 0
+  researchCost: 100
+  removable: 1

@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b562437f98eaa224ea41bd9350ce3e73, type: 3}
+  m_Name: GameDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.GameDatabase
+  ingredients:
+  - {fileID: 11400000, guid: 0df1ccd2ae3603245a460b778e4c35d5, type: 2}
+  - {fileID: 11400000, guid: a5364b682f8efb842877870fdad326df, type: 2}
+  - {fileID: 11400000, guid: c5b7edf5491b7db47a70babe02bf4001, type: 2}
+  - {fileID: 11400000, guid: e97c8e4fd90aa5045a2825b5462b71f5, type: 2}
+  - {fileID: 11400000, guid: 4f77ac631d2138e4f91b58f2caf49c38, type: 2}
+  - {fileID: 11400000, guid: a59b7deb2ddb25b4bbc751cd7848c161, type: 2}
+  - {fileID: 11400000, guid: 829137eecc177a941bd00f878cd9eec8, type: 2}
+  machines:
+  - {fileID: 11400000, guid: 026b6f0f14258d449aa9434c69690c60, type: 2}
+  - {fileID: 11400000, guid: 99cfbdfc08e8fce4f942517c26ffeda0, type: 2}
+  - {fileID: 11400000, guid: 61a913e461284d64ca770e770c8eb870, type: 2}
+  - {fileID: 11400000, guid: 953ab7eba0c5d2445aae0f74094b0e3e, type: 2}
+  - {fileID: 11400000, guid: 639a9c24943928b4c94f2a97c5b2fee8, type: 2}
+  - {fileID: 11400000, guid: adf0f4f8f601844459dfc8e93fd27bdc, type: 2}
+  - {fileID: 11400000, guid: 315497f89000d164cbbc2abfee1e3216, type: 2}
+  - {fileID: 11400000, guid: 1c5e91fd52146ce48b7d2b5bfac55708, type: 2}
+  - {fileID: 11400000, guid: e79dccd7d6a33ea4cadc797fdf85bcd0, type: 2}
+  - {fileID: 11400000, guid: b2b4ae6483df89b40a9d6ebd8d4a481f, type: 2}
+  - {fileID: 11400000, guid: 5e6e5e433cfb02042be2839f235923ba, type: 2}
+  - {fileID: 11400000, guid: fb866d956b50a144cb5682181d1b4be3, type: 2}
+  - {fileID: 11400000, guid: 3cc6bc8a06b065049981ea777043bdac, type: 2}
+  - {fileID: 11400000, guid: 6a182535aa637664596e2b19da6a945a, type: 2}
+  - {fileID: 11400000, guid: 6954b9c6ab9633245a2af439664ee1e1, type: 2}
+  - {fileID: 11400000, guid: 363399ceefb25904abe99fa4bc0b9b84, type: 2}
+  - {fileID: 11400000, guid: fc2c8abe474423c4b834496447ddbd04, type: 2}
+  - {fileID: 11400000, guid: dcd00c43b5bf8fa4980b2b8c9e3826ba, type: 2}
+  - {fileID: 11400000, guid: dd03bddd3f6cd9b419be34434fbb3ecf, type: 2}
+  potions:
+  - {fileID: 11400000, guid: 4d78eb60275ba7746a0ef672562feced, type: 2}
+  - {fileID: 11400000, guid: 314a1a5250297014d84de747573d3ad0, type: 2}
+  - {fileID: 11400000, guid: dd23a677293acc8429d7df10a669313b, type: 2}
+  - {fileID: 11400000, guid: a8b9074307376f54ca64ff249dc4c366, type: 2}
+  - {fileID: 11400000, guid: 5ea7d5e9b17998c4e961cb68b2de01a4, type: 2}
+  - {fileID: 11400000, guid: 9b153095b6495544590ce9871a452d78, type: 2}
+  - {fileID: 11400000, guid: af7db8cffdb2ebc4680826c711df5b17, type: 2}
+  customers:
+  - {fileID: 11400000, guid: f503011d9f56d2b46b9f37b69bbc116e, type: 2}
+  - {fileID: 11400000, guid: 37254ac2c6b792f40bffb46e563d324b, type: 2}
+  - {fileID: 11400000, guid: ddaa82ccc614d564883cd801bde4d70e, type: 2}
+  - {fileID: 11400000, guid: 1e56e62e51ad29246998490b0396091d, type: 2}
+  - {fileID: 11400000, guid: 05f69ebc2b30b3543900ffa3179c71d3, type: 2}
+  murkyPotion: {fileID: 11400000, guid: 3b1131f1edaae234fb1550a6f1446b49, type: 2}

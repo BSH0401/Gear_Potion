@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e1a2411466ca14aa76c5a72197f3bb, type: 3}
+  m_Name: POT_STORM
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.PotionSO
+  id: POT_STORM
+  displayName: "\uD3ED\uD48D \uC9C8\uC8FC \uD3EC\uC158"
+  shortName: "\uC9C8\uC8FC"
+  tier: 2
+  requirement:
+    ignis: 0
+    aqua: 15
+    ventus: 30
+    terra: 0
+    aether: 0
+  maxImpurity: 100
+  basePrice: 95
+  color: {r: 0.3529412, g: 0.9411765, b: 0.627451, a: 1}
+  note: "\uBBFC\uB4E4\uB808 \uBD84\uC1C4\xB7\uC99D\uB958 + \uC5BC\uC74C \uD30C\uD3B8
+    \uD569\uC131"

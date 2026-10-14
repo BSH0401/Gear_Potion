@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_FASTBELT
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_FASTBELT
+  displayName: "\uACE0\uC18D \uD0DC\uC5FD \uBCA8\uD2B8"
+  shortName: 
+  kind: 0
+  category: 0
+  zone: 2
+  size: {x: 1, y: 1}
+  tier: 2
+  cost: 12
+  mana: 0
+  processTime: 0
+  param: 3
+  priceBonus: 1
+  color: {r: 0.24705882, g: 0.2901961, b: 0.4, a: 1}
+  description: "\uCD08\uB2F9 3\uD0C0\uC77C \uC774\uC1A1\uD558\uB294 T2 \uBCA8\uD2B8"
+  unlockedByDefault: 0
+  researchCost: 100
+  removable: 1

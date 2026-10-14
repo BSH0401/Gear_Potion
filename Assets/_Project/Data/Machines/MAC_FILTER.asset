@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_FILTER
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_FILTER
+  displayName: "\uC6D0\uC2EC \uBD88\uC21C\uBB3C \uC5EC\uACFC\uAE30"
+  shortName: "\uC5EC\uACFC"
+  kind: 6
+  category: 1
+  zone: 0
+  size: {x: 2, y: 2}
+  tier: 2
+  cost: 180
+  mana: 8
+  processTime: 3.5
+  param: 0
+  priceBonus: 1
+  color: {r: 0.22745098, g: 0.3529412, b: 0.47843137, a: 1}
+  description: "\uC6D0\uC561 \uBD88\uC21C\uBB3C -20%p. \uC67C\uCABD \uCE21\uBA74\uC73C\uB85C
+    \uC2AC\uB7EC\uC9C0 1\uAC1C \uBC30\uCD9C"
+  unlockedByDefault: 0
+  researchCost: 80
+  removable: 1

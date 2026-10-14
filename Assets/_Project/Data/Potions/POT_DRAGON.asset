@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e1a2411466ca14aa76c5a72197f3bb, type: 3}
+  m_Name: POT_DRAGON
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.PotionSO
+  id: POT_DRAGON
+  displayName: "\uB4DC\uB798\uACE4 \uBE0C\uB808\uC2A4 \uC601\uC57D"
+  shortName: "\uBE0C\uB808\uC2A4"
+  tier: 3
+  requirement:
+    ignis: 60
+    aqua: 0
+    ventus: 0
+    terra: 0
+    aether: 30
+  maxImpurity: 100
+  basePrice: 220
+  color: {r: 0.8156863, g: 0.1254902, b: 0.22745098, a: 1}
+  note: "\uB3C5\uC0D8 \uB2E4\uC911 \uB18D\uCD95 + 2\uCC28 \uC5EC\uACFC"

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 944bc35409da7bf488006ce246cd3929, type: 3}
+  m_Name: CUS_VILLAGER
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.CustomerProfileSO
+  id: CUS_VILLAGER
+  displayName: "\uB9C8\uC744 \uC8FC\uBBFC"
+  color: {r: 0.54901963, g: 0.7529412, b: 0.9411765, a: 1}
+  priceTolerance: 1.15
+  moveSpeed: 2
+  minGrade: 0
+  wantsDefective: 0
+  buyCount: 1
+  payMultiplier: 1
+  spawnWeight: 5
+  phases: 3
+  minDay: 1
+  suspicionPerVisit: 0

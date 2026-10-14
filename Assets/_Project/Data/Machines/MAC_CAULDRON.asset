@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_CAULDRON
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_CAULDRON
+  displayName: "\uB9C8\uB3C4 \uD569\uC131 \uAC00\uB9C8"
+  shortName: "\uD569\uC131 \uAC00\uB9C8"
+  kind: 8
+  category: 1
+  zone: 0
+  size: {x: 3, y: 3}
+  tier: 2
+  cost: 300
+  mana: 12
+  processTime: 5
+  param: 2
+  priceBonus: 1
+  color: {r: 0.47843137, g: 0.22745098, b: 0.3529412, a: 1}
+  description: "\uC6D0\uC561 2\uAC1C\uB97C \uC11E\uC5B4 \uC6D0\uC18C\uB97C \uD569\uC0B0(\uBD88\uC21C\uBB3C
+    \uD3C9\uADE0). 15% \uD655\uB960 \uB300\uC131\uACF5(\uC21C\uB3C4 +8)"
+  unlockedByDefault: 0
+  researchCost: 160
+  removable: 1

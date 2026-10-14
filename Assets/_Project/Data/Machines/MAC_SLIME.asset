@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_SLIME
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_SLIME
+  displayName: "\uC5F0\uAE08 \uC2AC\uB77C\uC784 \uBC30\uC591\uC870"
+  shortName: "\uC2AC\uB77C\uC784"
+  kind: 10
+  category: 1
+  zone: 0
+  size: {x: 2, y: 2}
+  tier: 3
+  cost: 450
+  mana: 10
+  processTime: 8
+  param: 0
+  priceBonus: 1
+  color: {r: 0.2901961, g: 0.47843137, b: 0.22745098, a: 1}
+  description: "\uC2AC\uB7EC\uC9C0 2\uAC1C\uB97C \uBA39\uC5EC \uB9C8\uB825 \uACB0\uC815(35G)
+    1\uAC1C \uC0DD\uC0B0"
+  unlockedByDefault: 0
+  researchCost: 250
+  removable: 1

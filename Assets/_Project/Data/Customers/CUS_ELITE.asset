@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 944bc35409da7bf488006ce246cd3929, type: 3}
+  m_Name: CUS_ELITE
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.CustomerProfileSO
+  id: CUS_ELITE
+  displayName: "\uC815\uC608 \uBAA8\uD5D8\uAC00 \uD30C\uD2F0"
+  color: {r: 0.9411765, g: 0.54901963, b: 0.2901961, a: 1}
+  priceTolerance: 1.4
+  moveSpeed: 2.4
+  minGrade: 1
+  wantsDefective: 0
+  buyCount: 3
+  payMultiplier: 1
+  spawnWeight: 2
+  phases: 2
+  minDay: 2
+  suspicionPerVisit: 0
