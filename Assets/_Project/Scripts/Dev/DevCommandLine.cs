@@ -12,7 +12,7 @@ namespace GearPotion
     /// </summary>
     public static class DevCommandLine
     {
-        public static bool AutoStart, AutoContinue, AutoNextDay, Demo, OpenResearch;
+        public static bool AutoStart, AutoContinue, AutoNextDay, Demo, OpenResearch, PipeView;
         public static float TimeScale = 1f;
         public static int ExtraGold, ExtraRP;
 
@@ -31,6 +31,7 @@ namespace GearPotion
                     case "-autonext": AutoNextDay = true; break;
                     case "-continue": AutoContinue = true; break;
                     case "-research": OpenResearch = true; break;
+                    case "-pipeview": PipeView = true; break;
                     case "-unlockall": Research.UnlockAll = true; break;
                     case "-nosave": SaveSystem.Disabled = true; break;
                     case "-demo": Demo = true; AutoStart = true; break;

@@ -89,7 +89,7 @@ namespace GearPotion.EditorTools
             Add("MAC_CRUSHER", "자동 분쇄기", "분쇄", MachineKind.Crusher, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(1, 2), 1, 60, 3, 3f, "#7a4a3a",
                 "고체 원재료 → 분말. 주 원소 x1.3, 불순물 +10%p");
             Add("MAC_EXTRACTOR", "증기 압착 추출기", "추출", MachineKind.Extractor, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(2, 2), 1, 100, 5, 4f, "#3a6a4a",
-                "약초·분말 → 액체 원액. 원소와 불순물 유지");
+                "약초·분말 → 액체 원액(출력 포트에 배관 연결). 원소와 불순물 유지");
             Add("MAC_FILTER", "원심 불순물 여과기", "여과", MachineKind.Filter, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(2, 2), 2, 180, 8, 3.5f, "#3a5a7a",
                 "원액 불순물 -20%p. 왼쪽 측면으로 슬러지 1개 배출", false, 80);
             Add("MAC_DISTILLER", "증류탑", "증류", MachineKind.Distiller, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(1, 2), 2, 160, 6, 4f, "#5a4a7a",
@@ -97,7 +97,7 @@ namespace GearPotion.EditorTools
             Add("MAC_CAULDRON", "마도 합성 가마", "합성 가마", MachineKind.Cauldron, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(3, 3), 2, 300, 12, 5f, "#7a3a5a",
                 "원액 2개를 섞어 원소를 합산(불순물 평균). 15% 확률 대성공(순도 +8)", false, 160, param: 2f);
             Add("MAC_BOTTLER", "자동 병입 및 라벨기", "병입", MachineKind.Bottler, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(2, 2), 2, 220, 6, 2f, "#4a6a7a",
-                "원액을 유리병(1G)에 담아 포션으로 확정. 원소 조건으로 종류가 결정됨");
+                "인접 배관의 원액을 유리병(1G)에 담아 포션으로 확정. 원소 조건으로 종류가 결정됨");
             Add("MAC_SLIME", "연금 슬라임 배양조", "슬라임", MachineKind.SlimeVat, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(2, 2), 3, 450, 10, 8f, "#4a7a3a",
                 "슬러지 2개를 먹여 마력 결정(35G) 1개 생산", false, 250);
             // 상점
@@ -110,7 +110,10 @@ namespace GearPotion.EditorTools
             Add("MAC_COUNTER", "마도 자동 계산대", "계산대", MachineKind.Counter, BuildCategory.Shop, BuildZone.Shop, new Vector2Int(2, 1), 1, 0, 0, 0, "#5a3a2a",
                 "손님이 결제하는 곳", removable: false);
             // 마력
-            Add("MAC_CORE", "마나 코어", "마나 코어", MachineKind.ManaCore, BuildCategory.Power, BuildZone.Factory, new Vector2Int(2, 2), 1, 200, 30, 0, "#2a5a8a",
+            Add("MAC_PIPE", "마력 배관", "", MachineKind.Pipe, BuildCategory.Pipes, BuildZone.Any, one, 1, 3, 0, 0, "#8a95a8",
+                "원액(액체)을 옮기는 천장 배관 레이어. 벨트 위에 겹쳐 교차 설치 가능. 이어진 배관은 하나의 네트워크가 되어 " +
+                "출력 포트에 연결된 설비의 원액을 인접한 여과기·증류탑·가마·병입기로 자동 공급. 드래그로 연속 설치");
+            Add("MAC_CORE", "마나 코어", "마나 코어", MachineKind.ManaCore, BuildCategory.Pipes, BuildZone.Factory, new Vector2Int(2, 2), 1, 200, 30, 0, "#2a5a8a",
                 "마력 전력망에 30 MP/s 공급. 하루 유지비 30G");
             return list;
         }

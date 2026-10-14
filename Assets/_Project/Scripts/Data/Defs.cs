@@ -6,11 +6,11 @@ namespace GearPotion
     public enum MachineKind
     {
         Belt, Splitter, Sorter, Crate, Crusher, Extractor, Filter, Distiller, Cauldron, Bottler,
-        SlimeVat, Trash, Export, Shelf, ManaCore, Counter,
+        SlimeVat, Trash, Export, Shelf, ManaCore, Counter, Pipe,
     }
 
     public enum BuildZone { Factory, Shop, Any }
-    public enum BuildCategory { Logistics, Processing, Shop, Power }
+    public enum BuildCategory { Logistics, Pipes, Processing, Shop }
     public enum Grade { C, B, A, S, SSS }
     public enum ItemKind { Ingredient, Powder, Extract, Potion, Sludge, Crystal }
 

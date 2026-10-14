@@ -26,7 +26,7 @@ namespace GearPotion
         BuildCategory currentTab = BuildCategory.Logistics;
         GameObject hudGroup;
 
-        static readonly string[] TabNames = { "1 물류", "2 가공·연성", "3 상점", "4 마력" };
+        static readonly string[] TabNames = { "1 물류", "2 배관·마력", "3 가공·연성", "4 상점" };
 
         void Awake()
         {
@@ -179,7 +179,8 @@ namespace GearPotion
             modeText.text = builder.RemoveMode ? "<color=#ff8877>철거 모드</color> — 클릭해 철거 (75% 환불)" :
                 builder.Selected ? $"<color=#ffd27a>{builder.Selected.displayName}</color> — R 회전 · 우클릭 취소" +
                                    (builder.GhostReason != null ? $"  <color=#ff8877>({builder.GhostReason})</color>" : "") :
-                grid.Heatmap ? "<color=#9f9>효율 히트맵 뷰</color> (Tab)" : "설비 클릭: 설정 · 우클릭: 철거 · Q: 스포이트";
+                grid.View == ViewMode.Heatmap ? "<color=#9f9>효율 히트맵 뷰</color> (Tab)" :
+                grid.View == ViewMode.Pipes ? "<color=#8fd0ff>배관 뷰</color> (Tab) — 우클릭은 배관 우선 철거" : "설비 클릭: 설정 · 우클릭: 철거 · Tab: 뷰 전환";
 
             UpdateInfo(gm);
             UpdateGoals();
@@ -200,6 +201,7 @@ namespace GearPotion
             {
                 text = builder.Hovered.Info();
                 if (builder.Hovered.ClickHint != null) text += $"\n<color=#9fd8ff>{builder.Hovered.ClickHint}</color>";
+                if (builder.HoveredSecondary != null) text += $"\n<color=#888>──────────</color>\n<size=20>{builder.HoveredSecondary.Info()}</size>";
             }
             infoPanel.gameObject.SetActive(text != null);
             if (text == null) return;
@@ -226,9 +228,9 @@ namespace GearPotion
             if (!gm.InGame || modalOpen) return;
             if (kb.spaceKey.wasPressedThisFrame) gm.TogglePause();
             if (kb.digit1Key.wasPressedThisFrame) { currentTab = BuildCategory.Logistics; Rebuild(); }
-            if (kb.digit2Key.wasPressedThisFrame) { currentTab = BuildCategory.Processing; Rebuild(); }
-            if (kb.digit3Key.wasPressedThisFrame) { currentTab = BuildCategory.Shop; Rebuild(); }
-            if (kb.digit4Key.wasPressedThisFrame) { currentTab = BuildCategory.Power; Rebuild(); }
+            if (kb.digit2Key.wasPressedThisFrame) { currentTab = BuildCategory.Pipes; Rebuild(); }
+            if (kb.digit3Key.wasPressedThisFrame) { currentTab = BuildCategory.Processing; Rebuild(); }
+            if (kb.digit4Key.wasPressedThisFrame) { currentTab = BuildCategory.Shop; Rebuild(); }
             if (kb.tKey.wasPressedThisFrame) ShowResearch();
         }
     }

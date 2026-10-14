@@ -12,7 +12,7 @@ namespace GearPotion
     [Serializable]
     public class SaveData
     {
-        public int version = 1;
+        public int version = 2;
         public int day = 1;
         public int gold;
         public int rp;
@@ -101,6 +101,31 @@ namespace GearPotion
                 var origin = new Vector2Int(b.x, b.y);
                 if (grid.CanPlace(def, origin, b.dir, out _)) grid.Place(def, origin, b.dir, b.config);
             }
+            if (d.version < 2) MigrateV1(grid);
+        }
+
+        /// <summary>
+        /// v0.1 세이브: 원액이 벨트로 다니던 구간을 배관으로 바꾼다 (원액 생산 설비의 출력 칸부터 벨트를 따라감).
+        /// 분류기의 "원액" 조건이 빠지면서 뒤 조건 번호도 한 칸씩 당긴다.
+        /// </summary>
+        static void MigrateV1(FactoryGrid grid)
+        {
+            var pipeDef = GameManager.Db.Machine(MachineKind.Pipe);
+            var producers = new List<Processor>();
+            foreach (var p in grid.All<Processor>()) if (p.ProducesLiquid) producers.Add(p);
+            foreach (var p in producers)
+            {
+                var c = p.outCell;
+                int guard = 0;
+                while (grid.At(c) is Belt belt && guard++ < 64)
+                {
+                    int d = belt.dir;
+                    grid.Remove(belt);
+                    if (pipeDef) grid.Place(pipeDef, c, 0);
+                    c += Dir.V[d];
+                }
+            }
+            foreach (var s in grid.All<Sorter>()) if (s.config >= 5) s.config = Mathf.Max(0, s.config - 1);
         }
     }
 }

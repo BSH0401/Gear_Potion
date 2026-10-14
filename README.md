@@ -1,9 +1,9 @@
 # 기어 앤 포션 (Gear & Potion: Automate the Atelier)
 
 2D 그리드 기반 **마도 자동화 공방 + 포션 상점 타이쿤** — Unity 6 (6000.3.11f1) · 2D URP · C# 1인 개발 프로젝트.
-Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으로 만든 **수직 슬라이스(v0.1.0)** 입니다.
+Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으로 만든 **수직 슬라이스(v0.2.0)** 입니다.
 
-뒷방(공방)에서는 투입구 → 분쇄기 → 추출기 → 여과기 → 병입기가 벨트로 이어져 돌아가고,
+뒷방(공방)에서는 투입구 → 분쇄기 → 추출기 → 여과기 → 병입기가 벨트와 마력 배관으로 이어져 돌아가고,
 벽 너머 앞가게(매장)에서는 손님이 진열대의 포션을 사 갑니다.
 
 ## 실행 방법
@@ -20,14 +20,14 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 
 | 입력 | 동작 |
 |---|---|
-| 하단 독 클릭 / 1~4 | 설비 선택 (물류 · 가공·연성 · 상점 · 마력) |
-| 좌클릭 | 배치 (벨트는 드래그로 연속 배치, 끌어간 방향으로 자동 회전) |
+| 하단 독 클릭 / 1~4 | 설비 선택 (물류 · 배관·마력 · 가공·연성 · 상점) |
+| 좌클릭 | 배치 (벨트·배관은 드래그로 연속 배치, 벨트는 끌어간 방향으로 자동 회전) |
 | R / Shift+R | 회전 |
 | 우클릭 (드래그) | 철거 (75% 환불) · 선택 취소 |
 | X / Q | 철거 모드 / 스포이트 |
-| 설비 클릭 | 투입구 재료 · 진열대 가격 배율 · 분류기 조건 변경 |
+| 설비 클릭 | 투입구 재료 · 진열대 가격 배율 · 분류기 조건 · 합성 가마 혼합 모드 변경 |
 | Space · 1x/2x/3x | 일시정지 · 배속 |
-| Tab | 효율 히트맵 뷰 (초록 가동 / 노랑 재료 대기 / 빨강 막힘·마력 부족) |
+| Tab | 뷰 전환: 일반 → 배관 뷰(설비 반투명, 배관·원액 강조) → 효율 히트맵 |
 | T · F1 | 연구 · 도움말 |
 | WASD · 휠 · 휠버튼 드래그 · Home | 카메라 |
 
@@ -48,16 +48,28 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 | 연구 트리 (RP 해금) | ✅ 설비 8종 + 원재료 5종 |
 | 6.3 JSON 세이브 (매일 06:00 자동 저장, 이어하기) | ✅ |
 | 6.2 ScriptableObject 데이터 주도 설계 | ✅ `IngredientSO`/`MachineSO`/`PotionSO`/`CustomerProfileSO` |
-| 3.1 액체 배관 레이어 · 오버클럭 태엽 · 과열/냉각 | ⏳ 다음 단계 |
+| 3.1 액체 배관 레이어 (벨트와 교차, 네트워크 자동 공급) | ✅ `Pipes.cs` — v0.2.0 |
+| 5.1 배관 투시 뷰 (Tab) | ✅ |
+| 3.1 오버클럭 태엽 · 과열/냉각 | ⏳ 다음 단계 |
 | 3.3 4대 세력 대량 납품 계약 · 비밀 지하실 | ⏳ 다음 단계 (암시장 의심 수치/검문은 구현) |
-| 5.1 청사진 복사/붙여넣기 · 배관 투시 뷰 | ⏳ 다음 단계 |
+| 5.1 청사진 복사/붙여넣기 | ⏳ 다음 단계 |
 | 2D URP 발광 조명 · 실제 아트/사운드 | ⏳ 폴리싱 단계 |
+
+## 배관 레이어 (v0.2.0)
+
+- **고체**(재료·분말·포션·슬러지)는 벨트로, **액체 원액**은 마력 배관으로만 이동합니다. 벨트·분배기는 원액을 받지 않습니다.
+- 추출기·여과기·증류탑·합성 가마의 출력 칸(▶)에 배관을 놓으면 원액이 배관으로 나갑니다.
+- 이어진 배관은 하나의 **네트워크**가 되어, 배관에 닿은 여과기·증류탑·가마·병입기에 차례로(라운드로빈) 공급합니다. 원액을 넣은 설비로는 되돌려 보내지 않습니다.
+- 네트워크 용량은 `2 + 배관 칸수/2`, 이동 시간은 길이에 비례합니다. 배관은 원액 색으로 맥동합니다.
+- 배관은 벨트 위에 겹쳐 놓을 수 있습니다(교차). 설비끼리 바로 맞닿으면 배관 없이도 직접 넘어갑니다.
+- 합성 가마 혼합 모드(클릭): 기본은 **서로 다른 원액끼리**(주 원소가 다른 것)만 짝지어 섞고, 독샘+독샘처럼 같은 원액을 섞으려면 모드를 바꿉니다.
+- v0.1 세이브는 불러올 때 원액이 다니던 벨트 구간을 자동으로 배관으로 바꿉니다.
 
 ## 콘텐츠
 
 - 원재료 7종: 이슬 맺힌 약초, 화염 뿌리, 바람 민들레 홀씨, 구리빛 마광석, 동굴 발광 버섯, 얼음 정령의 파편, 용암 도마뱀의 독샘
 - 포션 7종(+실패작): 하급 치유 물약, 화염 활력제, 강철 피부 포션, 고순도 마나 엘릭서, 폭풍 질주 포션, 드래곤 브레스 영약, 액상 현자의 돌 (탁한 물약)
-- 설비 19종 — 밸런스 원본은 `Assets/_Project/Editor/DefaultContent.cs` (Setup Project 실행 시 에셋에 반영)
+- 설비 20종 — 밸런스 원본은 `Assets/_Project/Editor/DefaultContent.cs` (Setup Project 실행 시 에셋에 반영)
 
 ## 프로젝트 구조
 
@@ -65,11 +77,11 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 Assets/_Project/
   Editor/        ProjectSetup(메뉴·빌드), DefaultContent(밸런스 테이블)
   Scripts/Data/  Elements, ScriptableObject 정의
-  Scripts/Factory/ FactoryGrid(틱 매니저), Building(전 설비), Alchemy, Item, BuildController
+  Scripts/Factory/ FactoryGrid(틱 매니저·배관 네트워크 구성), Building(전 설비), Pipes(배관·네트워크), Alchemy, Item, BuildController
   Scripts/Shop/  Customer(FSM), CustomerManager
   Scripts/Core/  GameManager, GameClock, Economy, Market, Progression(연구·도감·목표), SaveSystem, Sprites, Sfx, Fx
   Scripts/UI/    HUD, HUD.Panels(타이틀·정산·연구·도움말), UIFactory
   Scripts/Dev/   DevCommandLine(자동 테스트 플래그), DemoLayout
 ```
 
-개발용 실행 플래그: `-autostart -continue -demo -timescale N -autonext -unlockall -gold N -rp N -nosave -shots 3,30 -shotdir 경로 -quitafter 초 -research`
+개발용 실행 플래그: `-autostart -continue -demo -timescale N -autonext -unlockall -gold N -rp N -nosave -shots 3,30 -shotdir 경로 -quitafter 초 -research -pipeview`

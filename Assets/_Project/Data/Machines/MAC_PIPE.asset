@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_PIPE
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_PIPE
+  displayName: "\uB9C8\uB825 \uBC30\uAD00"
+  shortName: 
+  kind: 16
+  category: 1
+  zone: 2
+  size: {x: 1, y: 1}
+  tier: 1
+  cost: 3
+  mana: 0
+  processTime: 0
+  param: 0
+  priceBonus: 1
+  color: {r: 0.5411765, g: 0.58431375, b: 0.65882355, a: 1}
+  description: "\uC6D0\uC561(\uC561\uCCB4)\uC744 \uC62E\uAE30\uB294 \uCC9C\uC7A5
+    \uBC30\uAD00 \uB808\uC774\uC5B4. \uBCA8\uD2B8 \uC704\uC5D0 \uACB9\uCCD0 \uAD50\uCC28
+    \uC124\uCE58 \uAC00\uB2A5. \uC774\uC5B4\uC9C4 \uBC30\uAD00\uC740 \uD558\uB098\uC758
+    \uB124\uD2B8\uC6CC\uD06C\uAC00 \uB418\uC5B4 \uCD9C\uB825 \uD3EC\uD2B8\uC5D0 \uC5F0\uACB0\uB41C
+    \uC124\uBE44\uC758 \uC6D0\uC561\uC744 \uC778\uC811\uD55C \uC5EC\uACFC\uAE30\xB7\uC99D\uB958\uD0D1\xB7\uAC00\uB9C8\xB7\uBCD1\uC785\uAE30\uB85C
+    \uC790\uB3D9 \uACF5\uAE09. \uB4DC\uB798\uADF8\uB85C \uC5F0\uC18D \uC124\uCE58"
+  unlockedByDefault: 1
+  researchCost: 0
+  removable: 1

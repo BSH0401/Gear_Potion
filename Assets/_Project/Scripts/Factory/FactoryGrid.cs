@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace GearPotion
 {
+    public enum ViewMode { Normal, Pipes, Heatmap }
+
     /// <summary>
     /// 공방 전체를 2차원 배열로 관리하는 결정론적 그리드 + TickManager (GDD 6.1).
     /// 아래 4줄은 매장(쇼룸), 그 위 6줄은 자동화 공방이다.
@@ -22,9 +24,12 @@ namespace GearPotion
         public float ManaSupply { get; private set; }
         public float ManaUse { get; private set; }
         public float PowerFactor { get; private set; } = 1f;
-        public bool Heatmap;
+        public ViewMode View;
+        public readonly List<PipeNetwork> networks = new();
+        bool networksDirty;
 
         readonly Building[,] cells = new Building[MaxWidth, Height];
+        readonly Pipe[,] pipes = new Pipe[MaxWidth, Height];
         public readonly List<Building> buildings = new();
         float tickTimer;
         Transform floorRoot;
@@ -35,6 +40,7 @@ namespace GearPotion
         public bool InBounds(Vector2Int c) => c.x >= 0 && c.y >= 0 && c.x < Width && c.y < Height;
         public static bool IsShop(Vector2Int c) => c.y < ShopRows;
         public Building At(Vector2Int c) => InBounds(c) ? cells[c.x, c.y] : null;
+        public Pipe PipeAt(Vector2Int c) => InBounds(c) ? pipes[c.x, c.y] : null;
         public Vector3 Door => new(Width / 2f, -0.6f, 0f);
 
         public void SetExpansion(int level)
@@ -92,10 +98,20 @@ namespace GearPotion
         public bool CanPlace(MachineSO def, Vector2Int origin, int dir, out string reason)
         {
             Building.Footprint(def, origin, dir, scratch, out _, out _);
+            // 배관은 별도 레이어: 빈 칸이나 벨트 위에 교차 설치 가능
+            bool overPipeOk = def.kind is MachineKind.Pipe or MachineKind.Belt or MachineKind.Splitter or MachineKind.Sorter;
             foreach (var c in scratch)
             {
                 if (!InBounds(c)) { reason = "부지 밖"; return false; }
+                if (def.kind == MachineKind.Pipe)
+                {
+                    if (pipes[c.x, c.y] != null) { reason = "이미 배관이 있음"; return false; }
+                    var ground = cells[c.x, c.y];
+                    if (ground != null && !(ground is Belt || ground is Splitter)) { reason = "설비 위에는 배관을 놓을 수 없음"; return false; }
+                    continue;
+                }
                 if (cells[c.x, c.y] != null) { reason = "이미 설비가 있음"; return false; }
+                if (!overPipeOk && pipes[c.x, c.y] != null) { reason = "배관을 먼저 철거하세요"; return false; }
                 if (def.zone == BuildZone.Factory && IsShop(c)) { reason = "공방 구역 전용 설비"; return false; }
                 if (def.zone == BuildZone.Shop && !IsShop(c)) { reason = "매장 구역 전용 설비"; return false; }
             }
@@ -107,22 +123,33 @@ namespace GearPotion
         {
             var b = Building.Create(def);
             b.Init(this, def, origin, dir, config);
-            foreach (var c in b.cells) cells[c.x, c.y] = b;
+            foreach (var c in b.cells)
+            {
+                if (b is Pipe p) pipes[c.x, c.y] = p;
+                else cells[c.x, c.y] = b;
+            }
             buildings.Add(b);
+            networksDirty = true;
             return b;
         }
 
         public void Remove(Building b)
         {
             foreach (var c in b.cells)
-                if (InBounds(c) && cells[c.x, c.y] == b) cells[c.x, c.y] = null;
+            {
+                if (!InBounds(c)) continue;
+                if (cells[c.x, c.y] == b) cells[c.x, c.y] = null;
+                if (pipes[c.x, c.y] == b) pipes[c.x, c.y] = null;
+            }
             buildings.Remove(b);
             b.Destroy();
+            networksDirty = true;
         }
 
         public void Clear()
         {
             foreach (var b in buildings.ToArray()) Remove(b);
+            networks.Clear();
             ItemViews.Clear();
         }
 
@@ -156,7 +183,8 @@ namespace GearPotion
             }
             if (guard >= 8) tickTimer = 0f; // 초고배속에서 틱이 밀리면 버린다
             ItemViews.Animate(dt);
-            for (int i = 0; i < buildings.Count; i++) buildings[i].Animate(dt, Heatmap);
+            if (networksDirty) RebuildNetworks();
+            for (int i = 0; i < buildings.Count; i++) buildings[i].Animate(dt, View);
         }
 
         /// <summary>마력 전력망: 수요가 공급을 넘으면 모든 설비가 비례해서 느려진다.</summary>
@@ -171,7 +199,51 @@ namespace GearPotion
             ManaSupply = supply;
             ManaUse = demand;
             PowerFactor = demand <= supply || demand <= 0.001f ? 1f : supply / demand;
+            if (networksDirty) RebuildNetworks();
             for (int i = 0; i < buildings.Count; i++) buildings[i].Tick(dt, PowerFactor);
+            for (int i = 0; i < networks.Count; i++) networks[i].Tick(dt);
+        }
+
+        /// <summary>
+        /// 연결된 배관을 하나의 네트워크로 묶고(Flood fill), 인접한 가공 설비를 소비처로 등록한다.
+        /// 배관·설비가 바뀔 때마다 다시 계산하며, 기존 네트워크 안의 원액은 최대한 보존한다.
+        /// </summary>
+        void RebuildNetworks()
+        {
+            networksDirty = false;
+            var old = new List<PipeNetwork>(networks);
+            networks.Clear();
+            var stack = new Stack<Pipe>();
+            foreach (var b in buildings) if (b is Pipe p0) p0.network = null;
+            foreach (var b in buildings)
+            {
+                if (!(b is Pipe start) || start.network != null) continue;
+                var net = new PipeNetwork(this);
+                networks.Add(net);
+                stack.Push(start);
+                start.network = net;
+                while (stack.Count > 0)
+                {
+                    var p = stack.Pop();
+                    net.pipes.Add(p);
+                    for (int d = 0; d < 4; d++)
+                    {
+                        var n = PipeAt(p.origin + Dir.V[d]);
+                        if (n == null || n.network == net) continue;
+                        n.network = net;
+                        stack.Push(n);
+                    }
+                }
+            }
+            foreach (var net in networks) net.FindConsumers();
+            // 원액 보존: 예전 네트워크의 첫 배관이 속한 새 네트워크로 옮긴다
+            foreach (var o in old)
+            {
+                Pipe anchor = null;
+                foreach (var p in o.pipes) if (PipeAt(p.origin) == p && p.network != null) { anchor = p; break; }
+                if (anchor != null) anchor.network.Absorb(o);
+            }
+            foreach (var b in buildings) if (b is Pipe p) p.RefreshConnections();
         }
     }
 }

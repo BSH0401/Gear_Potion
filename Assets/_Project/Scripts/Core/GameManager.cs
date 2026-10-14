@@ -57,6 +57,7 @@ namespace GearPotion
             else if (DevCommandLine.AutoStart) NewGame();
             else Hud.ShowTitle();
             if (DevCommandLine.OpenResearch && InGame) Hud.ShowResearch();
+            if (DevCommandLine.PipeView) Grid.View = ViewMode.Pipes;
         }
 
         // ───────────── 게임 흐름 ─────────────

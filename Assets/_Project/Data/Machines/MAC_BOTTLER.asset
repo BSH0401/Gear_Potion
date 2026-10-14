@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: "\uC790\uB3D9 \uBCD1\uC785 \uBC0F \uB77C\uBCA8\uAE30"
   shortName: "\uBCD1\uC785"
   kind: 9
-  category: 1
+  category: 2
   zone: 0
   size: {x: 2, y: 2}
   tier: 2
@@ -26,8 +26,9 @@ MonoBehaviour:
   param: 0
   priceBonus: 1
   color: {r: 0.2901961, g: 0.41568628, b: 0.47843137, a: 1}
-  description: "\uC6D0\uC561\uC744 \uC720\uB9AC\uBCD1(1G)\uC5D0 \uB2F4\uC544 \uD3EC\uC158\uC73C\uB85C
-    \uD655\uC815. \uC6D0\uC18C \uC870\uAC74\uC73C\uB85C \uC885\uB958\uAC00 \uACB0\uC815\uB428"
+  description: "\uC778\uC811 \uBC30\uAD00\uC758 \uC6D0\uC561\uC744 \uC720\uB9AC\uBCD1(1G)\uC5D0
+    \uB2F4\uC544 \uD3EC\uC158\uC73C\uB85C \uD655\uC815. \uC6D0\uC18C \uC870\uAC74\uC73C\uB85C
+    \uC885\uB958\uAC00 \uACB0\uC815\uB428"
   unlockedByDefault: 1
   researchCost: 0
   removable: 1

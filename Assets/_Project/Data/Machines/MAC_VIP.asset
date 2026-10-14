@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: "\uD669\uAE08 VIP \uC1FC\uCF00\uC774\uC2A4"
   shortName: VIP
   kind: 13
-  category: 2
+  category: 3
   zone: 1
   size: {x: 1, y: 1}
   tier: 3

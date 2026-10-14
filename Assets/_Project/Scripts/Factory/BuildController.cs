@@ -16,6 +16,7 @@ namespace GearPotion
         public bool RemoveMode { get; private set; }
         public int Rotation { get; private set; }
         public Building Hovered { get; private set; }
+        public Building HoveredSecondary { get; private set; }
 
         Camera cam;
         Transform ghostRoot;
@@ -57,6 +58,7 @@ namespace GearPotion
             var gm = GameManager.Instance;
             HideGhost();
             Hovered = null;
+            HoveredSecondary = null;
             if (!gm || !gm.InGame || gm.Modal) return;
             var mouse = Mouse.current;
             var kb = Keyboard.current;
@@ -69,8 +71,14 @@ namespace GearPotion
                 if (kb.xKey.wasPressedThisFrame) ToggleRemoveMode();
                 if (kb.tabKey.wasPressedThisFrame)
                 {
-                    GameManager.Grid.Heatmap = !GameManager.Grid.Heatmap;
-                    Toasts.Show(GameManager.Grid.Heatmap ? "효율 히트맵 뷰: 초록=가동 · 노랑=재료 대기 · 빨강=막힘/마력 부족" : "일반 뷰", UIFactory.Accent);
+                    var g = GameManager.Grid;
+                    g.View = (ViewMode)(((int)g.View + 1) % 3);
+                    Toasts.Show(g.View switch
+                    {
+                        ViewMode.Pipes => "배관 뷰: 설비가 반투명해지고 배관 네트워크와 원액 색이 강조됩니다",
+                        ViewMode.Heatmap => "효율 히트맵 뷰: 초록=가동 · 노랑=재료 대기 · 빨강=막힘/마력 부족",
+                        _ => "일반 뷰",
+                    }, UIFactory.Accent);
                 }
             }
 
@@ -78,7 +86,12 @@ namespace GearPotion
             var world = cam.ScreenToWorldPoint(mouse.position.ReadValue());
             var cell = FactoryGrid.CellAt(world);
             var grid = GameManager.Grid;
-            Hovered = overUI ? null : grid.At(cell);
+            // 같은 칸에 벨트와 배관이 겹치면: 배관 뷰·배관 선택 중에는 배관 우선
+            var ground = grid.At(cell);
+            var pipe = grid.PipeAt(cell);
+            bool pipeFirst = grid.View == ViewMode.Pipes || (Selected && Selected.kind == MachineKind.Pipe);
+            Hovered = overUI ? null : pipeFirst ? (Building)pipe ?? ground : ground ?? pipe;
+            HoveredSecondary = overUI || Hovered == null ? null : Hovered == ground ? pipe : ground;
 
             if (kb != null && kb.qKey.wasPressedThisFrame && Hovered != null && Hovered.def.removable)
             {
@@ -126,14 +139,22 @@ namespace GearPotion
             Building.Footprint(Selected, origin, Rotation, footprint, out outCell, out _);
             bool ok = grid.CanPlace(Selected, origin, Rotation, out var reason);
             bool afford = Economy.CanAfford(Selected.cost);
-            ShowGhost(footprint, ok && afford ? new Color(0.4f, 1f, 0.5f, 0.45f) : new Color(1f, 0.3f, 0.25f, 0.45f), Rotation,
+            ShowGhost(footprint, ok && afford ? new Color(0.4f, 1f, 0.5f, 0.45f) : new Color(1f, 0.3f, 0.25f, 0.45f),
+                Selected.kind == MachineKind.Pipe ? -1 : Rotation,
                 Selected.kind == MachineKind.Belt ? FactoryGrid.CellCenter(origin) : FactoryGrid.CellCenter(outCell) - Dir.V3(Rotation) * 0.6f);
             GhostReason = ok ? (afford ? null : "골드 부족") : reason;
 
             if (mouse.leftButton.wasPressedThisFrame) dragging = true;
             if (!dragging || !mouse.leftButton.isPressed) return;
 
-            if (Selected.kind == MachineKind.Belt)
+            if (Selected.kind == MachineKind.Pipe)
+            {
+                // 배관 드래그: 방향 없음, 지나가는 칸마다 설치
+                if (cell == lastDragCell) return;
+                lastDragCell = cell;
+                if (grid.CanPlace(Selected, cell, 0, out _)) TryPlace(cell);
+            }
+            else if (Selected.kind == MachineKind.Belt)
             {
                 // 벨트 드래그: 이동 방향으로 자동 회전하고 직전 벨트도 이어지도록 돌린다
                 if (cell == lastDragCell) return;

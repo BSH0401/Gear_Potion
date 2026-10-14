@@ -63,6 +63,7 @@ namespace GearPotion
             MachineKind.Shelf => new Shelf(),
             MachineKind.ManaCore => new ManaCore(),
             MachineKind.Counter => new Counter(),
+            MachineKind.Pipe => new Pipe(),
             _ => new Processor(),
         };
 
@@ -134,8 +135,9 @@ namespace GearPotion
         float barWidth;
         protected virtual bool HasOutput => true;
 
-        public virtual void Animate(float dt, bool heatmap)
+        public virtual void Animate(float dt, ViewMode mode)
         {
+            ApplyFade(mode);
             if (progressBar)
             {
                 float p = Mathf.Clamp01(progress);
@@ -157,9 +159,38 @@ namespace GearPotion
             }
             if (statusOverlay)
             {
+                bool heatmap = mode == ViewMode.Heatmap;
                 statusOverlay.enabled = heatmap;
                 if (heatmap) statusOverlay.color = StatusColor(status) * new Color(1f, 1f, 1f, 0.55f);
             }
+        }
+
+        // 배관 뷰에서는 바닥 설비를 반투명하게 (GDD 5.1 다중 레이어 투시 뷰)
+        ViewMode fadeMode;
+        SpriteRenderer[] fadeTargets;
+        float[] fadeAlphas;
+        MeshRenderer fadeLabel;
+
+        protected void ApplyFade(ViewMode mode)
+        {
+            if (mode == fadeMode || !go) return;
+            fadeMode = mode;
+            if (fadeTargets == null)
+            {
+                fadeTargets = go.GetComponentsInChildren<SpriteRenderer>(true);
+                fadeAlphas = new float[fadeTargets.Length];
+                for (int i = 0; i < fadeTargets.Length; i++) fadeAlphas[i] = fadeTargets[i].color.a;
+                if (label) fadeLabel = label.GetComponent<MeshRenderer>();
+            }
+            float k = mode == ViewMode.Pipes ? 0.28f : 1f;
+            for (int i = 0; i < fadeTargets.Length; i++)
+            {
+                if (fadeTargets[i] == statusOverlay) continue;
+                var c = fadeTargets[i].color;
+                c.a = fadeAlphas[i] * k;
+                fadeTargets[i].color = c;
+            }
+            if (fadeLabel) fadeLabel.enabled = mode != ViewMode.Pipes;
         }
 
         public static Color StatusColor(BuildingStatus s) => s switch
@@ -235,11 +266,12 @@ namespace GearPotion
             progressBar = null;
         }
 
-        public override void Animate(float dt, bool heatmap) { }
+        public override void Animate(float dt, ViewMode mode) => ApplyFade(mode);
 
         public override bool TryInsert(Item it, Vector2Int cell, int travelDir)
         {
-            if (item != null || travelDir == Dir.Opp(dir)) return false;
+            // 액체(원액)는 벨트에 올릴 수 없다 — 배관으로만 이동
+            if (item != null || it.IsLiquid || travelDir == Dir.Opp(dir)) return false;
             item = it;
             entryDir = travelDir;
             progress = 0f;
@@ -286,7 +318,7 @@ namespace GearPotion
 
         public override bool TryInsert(Item it, Vector2Int cell, int travelDir)
         {
-            if (held != null || travelDir == Dir.Opp(dir)) return false;
+            if (held != null || it.IsLiquid || travelDir == Dir.Opp(dir)) return false;
             held = it;
             it.Show(center, false);
             return true;
@@ -322,7 +354,7 @@ namespace GearPotion
     {
         public static readonly string[] Modes =
         {
-            "슬러지", "포션 S등급 이상", "포션 A등급 이상", "불량 포션(C·탁함)", "포션 전체", "원액", "분말", "마력 결정",
+            "슬러지", "포션 S등급 이상", "포션 A등급 이상", "불량 포션(C·탁함)", "포션 전체", "분말", "마력 결정",
         };
 
         bool Match(Item it) => config switch
@@ -332,8 +364,7 @@ namespace GearPotion
             2 => it.kind == ItemKind.Potion && it.Grade >= Grade.A && !it.IsDefective,
             3 => it.IsDefective,
             4 => it.kind == ItemKind.Potion,
-            5 => it.kind == ItemKind.Extract,
-            6 => it.kind == ItemKind.Powder,
+            5 => it.kind == ItemKind.Powder,
             _ => it.kind == ItemKind.Crystal,
         };
 
@@ -580,9 +611,31 @@ namespace GearPotion
         public override bool TryInsert(Item it, Vector2Int cell, int travelDir)
         {
             if (input.Count >= Mathf.Max(InCap, Need + 1) || !Accepts(it)) return false;
+            if (def.kind == MachineKind.Cauldron && config == 0 && !AddsVariety(it)) return false;
             it.Hide();
             input.Add(it);
             return true;
+        }
+
+        /// <summary>
+        /// 합성 가마 기본 모드: 같은 주 원소의 원액만으로 가마가 채워지지 않게 한다
+        /// (두 배관에서 들어오는 서로 다른 원액을 짝지어 섞기 위함).
+        /// </summary>
+        bool AddsVariety(Item it)
+        {
+            if (input.Count < Need - 1) return true;
+            int main = it.el.MainIndex;
+            foreach (var x in input) if (x.el.MainIndex != main) return true;
+            return false;
+        }
+
+        public override string ClickHint => def.kind == MachineKind.Cauldron ? "클릭: 혼합 모드 변경" : null;
+
+        public override void OnClick()
+        {
+            if (def.kind != MachineKind.Cauldron) return;
+            config = config == 0 ? 1 : 0;
+            Fx.Float(center, config == 0 ? "서로 다른 원액끼리" : "같은 원액도 혼합", new Color(1f, 0.7f, 1f));
         }
 
         public override void Tick(float dt, float power)
@@ -591,7 +644,7 @@ namespace GearPotion
             for (int i = 0; i < output.Count;)
             {
                 var (it, side) = output[i];
-                bool ok = side ? PushTo(it, sideCell, Dir.Left(dir)) : PushTo(it, outCell, dir);
+                bool ok = side ? PushTo(it, sideCell, Dir.Left(dir)) : it.IsLiquid ? PushLiquid(it) : PushTo(it, outCell, dir);
                 if (ok) output.RemoveAt(i);
                 else i++;
             }
@@ -604,6 +657,16 @@ namespace GearPotion
             progress = 0f;
             Process();
         }
+
+        /// <summary>원액은 출력 포트의 배관 네트워크로, 배관이 없으면 바로 앞 설비로 직접 넘긴다.</summary>
+        bool PushLiquid(Item it)
+        {
+            var pipe = grid.PipeAt(outCell);
+            if (pipe != null) return pipe.network != null && pipe.network.TryInsert(it, this);
+            return PushTo(it, outCell, dir);
+        }
+
+        public bool ProducesLiquid => def.kind is MachineKind.Extractor or MachineKind.Filter or MachineKind.Distiller or MachineKind.Cauldron;
 
         void Stop(BuildingStatus s)
         {
@@ -681,8 +744,13 @@ namespace GearPotion
         public override string Info()
         {
             var s = base.Info() + $"\n투입 {input.Count} · 배출 대기 {output.Count} · 처리 {def.processTime:0.#}초 · 누적 {made}";
+            if (ProducesLiquid) s += "\n<size=22><color=#8fd0ff>출력 포트(▶)에 배관을 연결하면 원액이 배관으로 나갑니다</color></size>";
+            if (def.kind is MachineKind.Filter or MachineKind.Distiller or MachineKind.Cauldron or MachineKind.Bottler)
+                s += "\n<size=22><color=#8fd0ff>인접한 배관에서 원액을 받습니다</color></size>";
             if (def.kind == MachineKind.Filter) s += "\n<size=22>왼쪽 측면 포트로 슬러지 배출</size>";
-            if (def.kind == MachineKind.Cauldron) s += $"\n<size=22>원액 {Need}개를 섞어 원소 합산 · 대성공 {Alchemy.GreatSuccessChance * 100f:0}%</size>";
+            if (def.kind == MachineKind.Cauldron)
+                s += $"\n<size=22>원액 {Need}개를 섞어 원소 합산 · 대성공 {Alchemy.GreatSuccessChance * 100f:0}%\n" +
+                     $"혼합 모드: <color=#f0b0ff>{(config == 0 ? "서로 다른 원액끼리 (주 원소가 다른 것)" : "같은 원액도 혼합 (예: 독샘+독샘)")}</color></size>";
             if (input.Count > 0) s += $"\n<size=22><color=#ccc>다음: {input[0].Name} ({input[0].el.Describe()}, 불순물 {input[0].impurity:0}%)</color></size>";
             if (!string.IsNullOrEmpty(def.description)) s += $"\n<size=22><color=#aaa>{def.description}</color></size>";
             return s;
