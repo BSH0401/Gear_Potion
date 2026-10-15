@@ -40,6 +40,7 @@ namespace GearPotion
             BuildInfo(hudGroup.transform);
             BuildGoals(hudGroup.transform);
             BuildToasts(root);
+            BuildTutorial(hudGroup.transform);
             Research.Changed += Rebuild;
         }
 
@@ -191,6 +192,7 @@ namespace GearPotion
 
             UpdateInfo(gm);
             UpdateGoals();
+            UpdateTutorial(gm);
         }
 
         void UpdateInfo(GameManager gm)

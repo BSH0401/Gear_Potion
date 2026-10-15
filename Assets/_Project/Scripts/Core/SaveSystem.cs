@@ -26,6 +26,7 @@ namespace GearPotion
         public List<Contract> contracts = new();
         public int[] factionRank = new int[4];
         public bool[] factionPerks = new bool[4];
+        public int tutorialStep = -1;
     }
 
     [Serializable]
@@ -61,6 +62,7 @@ namespace GearPotion
                 contracts = new List<Contract>(Contracts.Active),
                 factionRank = (int[])Contracts.Rank.Clone(),
                 factionPerks = (bool[])Contracts.Perks.Clone(),
+                tutorialStep = Tutorial.Step,
             };
             foreach (var b in grid.buildings)
                 d.buildings.Add(new BuildingSave { id = b.def.id, x = b.origin.x, y = b.origin.y, dir = b.dir, config = b.config, oc = b is Processor { overclocked: true } ? 1 : 0 });
@@ -102,6 +104,7 @@ namespace GearPotion
             Research.Reset(d.unlocked);
             Discoveries.Reset(d.discovered, d.totalSold, d.totalRevenue, d.bestGrade, d.brewed);
             Contracts.Reset(d.contracts, d.factionRank, d.factionPerks);
+            Tutorial.Step = d.tutorialStep;
             foreach (var b in d.buildings)
             {
                 var def = GameManager.Db.Machine(b.id);

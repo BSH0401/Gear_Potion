@@ -1,7 +1,7 @@
 # 기어 앤 포션 (Gear & Potion: Automate the Atelier)
 
 2D 그리드 기반 **마도 자동화 공방 + 포션 상점 타이쿤** — Unity 6 (6000.3.11f1) · 2D URP · C# 1인 개발 프로젝트.
-Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으로 만든 **수직 슬라이스(v0.7.0)** 입니다.
+Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으로 만든 **수직 슬라이스(v0.8.0)** 입니다.
 
 뒷방(공방)에서는 투입구 → 분쇄기 → 추출기 → 여과기 → 병입기가 벨트와 마력 배관으로 이어져 돌아가고,
 벽 너머 앞가게(매장)에서는 손님이 진열대의 포션을 사 갑니다.
@@ -105,6 +105,13 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 - **마력 배관 발광**: 원액이 흐르는 배관은 원액 색으로 은은하게 빛납니다.
 - 합성 가마가 원액을 섞을 때 보글거리는 소리가 납니다.
 
+## 튜토리얼 (v0.8.0)
+
+새 게임을 시작하면 왼쪽 위에 9단계 안내가 나옵니다(GDD 5개월 차 '초반 15분 튜토리얼 가이드').
+환영 → 투입구 살펴보기(공방 위 화살표) → 첫 판매(배속 버튼 강조) → 진열대 늘리기([4 상점] 탭 강조) →
+분배기로 나누기(철거할 벨트 화살표) → 여과기 연구(연구 버튼 강조) → Tab 뷰 전환 → 세력 계약(계약 버튼 강조) → 완료.
+조건을 만족하면 자동으로 다음 단계로 넘어가며, '단계 건너뛰기'·'튜토리얼 끄기'로 언제든 넘길 수 있습니다. 진행 단계는 세이브에 저장됩니다.
+
 ## 밸런스 (v0.7.0)
 
 자동 실행으로 시작 라인만 둔 채 3일을 돌려 하루 결산을 비교한 뒤 조정했습니다.
@@ -144,4 +151,4 @@ Assets/_Project/
   Scripts/Dev/   DevCommandLine(자동 테스트 플래그), DemoLayout
 ```
 
-개발용 실행 플래그: `-hour 20 -bptest -blueprints -autocontract -contracts -autostart -continue -demo -timescale N -autonext -unlockall -gold N -rp N -nosave -shots 3,30 -shotdir 경로 -quitafter 초 -research -pipeview`
+개발용 실행 플래그: `-tutorial N -notutorial -hour 20 -bptest -blueprints -autocontract -contracts -autostart -continue -demo -timescale N -autonext -unlockall -gold N -rp N -nosave -shots 3,30 -shotdir 경로 -quitafter 초 -research -pipeview`

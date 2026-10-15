@@ -12,10 +12,11 @@ namespace GearPotion
     /// </summary>
     public static class DevCommandLine
     {
-        public static bool AutoStart, AutoContinue, AutoNextDay, Demo, OpenResearch, PipeView, AutoContract, OpenContracts, OpenHelp, OpenBlueprints, BlueprintTest;
+        public static bool AutoStart, AutoContinue, AutoNextDay, Demo, OpenResearch, PipeView, AutoContract, OpenContracts, OpenHelp, OpenBlueprints, BlueprintTest, NoTutorial;
         public static float TimeScale = 1f;
         static float startHour = -1f;
         public static int ExtraGold, ExtraRP;
+        public static int TutorialStart = -1;
 
         public static void Apply(GameManager gm)
         {
@@ -38,6 +39,8 @@ namespace GearPotion
                     case "-help": OpenHelp = true; break;
                     case "-blueprints": OpenBlueprints = true; break;
                     case "-bptest": BlueprintTest = true; break;
+                    case "-notutorial": NoTutorial = true; break;
+                    case "-tutorial": TutorialStart = (int)ParseF(next, 0f); break;
                     case "-hour": startHour = ParseF(next, -1f); break;
                     case "-unlockall": Research.UnlockAll = true; break;
                     case "-nosave": SaveSystem.Disabled = true; break;
@@ -119,7 +122,7 @@ namespace GearPotion
                     string path = Path.Combine(dir, $"shot_{n++:00}_{t:0}s.png");
                     ScreenCapture.CaptureScreenshot(path);
                     var gm = GameManager.Instance;
-                    Debug.Log($"[Dev] screenshot {path} day={gm.Clock.Day} time={gm.Clock.TimeText} gold={Economy.Gold} sold={Discoveries.TotalSold} " +
+                    Debug.Log($"[Dev] screenshot {path} tutorial={Tutorial.Step} day={gm.Clock.Day} time={gm.Clock.TimeText} gold={Economy.Gold} sold={Discoveries.TotalSold} " +
                               $"known={string.Join("/", Discoveries.Known)} buildings={GameManager.Grid.buildings.Count} items={ItemViews.ActiveCount} rating={Market.Rating:0.00} fires={Processor.FiresStarted} contracts={Contracts.Completed}/{Contracts.Active.Count} offers={Contracts.Offers.Count}");
                 }
             }

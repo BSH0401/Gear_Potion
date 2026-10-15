@@ -65,6 +65,7 @@ namespace GearPotion
             if (DevCommandLine.AutoContinue) Continue();
             else if (DevCommandLine.AutoStart) NewGame();
             else Hud.ShowTitle();
+            if (DevCommandLine.TutorialStart >= 0 && InGame) Tutorial.Step = DevCommandLine.TutorialStart;
             if (DevCommandLine.OpenResearch && InGame) Hud.ShowResearch();
             if (DevCommandLine.PipeView) Grid.View = ViewMode.Pipes;
             if (DevCommandLine.OpenContracts && InGame) Hud.ShowContracts();
@@ -85,6 +86,7 @@ namespace GearPotion
             Contracts.Reset(null, null, null);
             Economy.Reset(StartGold + DevCommandLine.ExtraGold, DevCommandLine.ExtraRP);
             StarterLayout.Build(Grid);
+            Tutorial.Step = DevCommandLine.Demo || DevCommandLine.NoTutorial ? -1 : 0;
             BeginSession(1);
             Toasts.Show("기어 앤 포션에 오신 것을 환영합니다! 이미 놓인 치유 물약 라인이 돌아가기 시작합니다.", UIFactory.Accent, 6f);
         }
