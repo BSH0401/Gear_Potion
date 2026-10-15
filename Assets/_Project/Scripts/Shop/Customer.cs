@@ -9,7 +9,7 @@ namespace GearPotion
     /// </summary>
     public class Customer : MonoBehaviour
     {
-        enum State { Enter, Browse, ToShelf, ToCounter, Pay, Leave }
+        enum State { Enter, Browse, ToShelf, ToCounter, Pay, Haggle, Leave }
 
         public CustomerProfileSO profile;
         public PotionSO wanted; // null = 아무 포션
@@ -27,6 +27,10 @@ namespace GearPotion
         Renderer[] renderers;
 
         public bool Done { get; private set; }
+        public bool Haggling => state == State.Haggle;
+        int vipItems, haggleStars;
+        float haggleMult = 1f;
+        bool haggleDone;
         bool IsBroker => profile.wantsDefective;
 
         public void Init(CustomerManager manager, CustomerProfileSO profile, PotionSO wanted, Vector3 door)
@@ -92,7 +96,16 @@ namespace GearPotion
                     break;
                 case State.Pay:
                     timer -= dt;
-                    if (timer <= 0f) Pay();
+                    if (timer > 0f) break;
+                    // VIP 쇼케이스 상품이 있으면 흥정 미니게임 (다른 흥정이 진행 중이면 정가)
+                    if (vipItems > 0 && !haggleDone)
+                    {
+                        haggleDone = true;
+                        if (Haggle.Request(this)) { state = State.Haggle; break; }
+                    }
+                    Pay();
+                    break;
+                case State.Haggle:
                     break;
                 case State.Leave:
                     if (!moving)
@@ -145,6 +158,7 @@ namespace GearPotion
             var it = targetShelf.Take(idx);
             int price = IsBroker ? Market.BlackMarketPrice(it) : Mathf.RoundToInt(Market.ShelfPrice(it, targetShelf) * profile.payMultiplier);
             basket.Add((it, price));
+            if (!IsBroker && targetShelf.def.priceBonus >= 1.25f) vipItems++;
             if (it.view) it.view.body.sortingOrder = 43;
             if (basket.Count < profile.buyCount && FindShelf()) { state = State.ToShelf; return; }
             GoToCounter();
@@ -166,6 +180,7 @@ namespace GearPotion
                 gradeScore += item.IsDefective ? 1 : (int)item.Grade;
                 item.Hide();
             }
+            total = Mathf.Max(1, Mathf.RoundToInt(total * haggleMult));
             var entry = IsBroker ? LedgerEntry.BlackMarket : LedgerEntry.Retail;
             Economy.Earn(total, entry);
             Discoveries.TotalSold += basket.Count;
@@ -179,6 +194,7 @@ namespace GearPotion
             float avgGrade = gradeScore / (float)basket.Count; // C=0 … SSS=4
             int stars = Mathf.Clamp(Mathf.RoundToInt(2f + avgGrade), 1, 5);
             if (targetShelf != null && targetShelf.Markup > profile.priceTolerance) stars--;
+            stars += haggleStars;
             basket.Clear();
             Leave(Mathf.Clamp(stars, 1, 5), null);
         }
@@ -204,6 +220,17 @@ namespace GearPotion
             bubbleText.gameObject.SetActive(false);
             target = manager.Grid.Door + new Vector3(0f, -0.6f, 0f);
             state = State.Leave;
+        }
+
+        /// <summary>흥정 결과를 받아 결제를 이어 간다.</summary>
+        public void HaggleResult(float mult, int starDelta, string text)
+        {
+            if (state != State.Haggle) return;
+            haggleMult = mult;
+            haggleStars = starDelta;
+            Fx.Float(transform.position + Vector3.up * 1.1f, text, mult > 1f ? new Color(1f, 0.85f, 0.3f) : mult < 1f ? new Color(1f, 0.55f, 0.5f) : Color.white, 1.6f);
+            state = State.Pay;
+            timer = 0.2f;
         }
 
         public void ForceLeave() { if (state != State.Leave) Leave(basket.Count > 0 ? 3 : 2, null); }

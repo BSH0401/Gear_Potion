@@ -83,6 +83,8 @@ namespace GearPotion.EditorTools
                 "선택한 원재료를 매입가를 지불하고 2초마다 배출. 클릭해 재료 변경");
             Add("MAC_EXPORT", "납품 상자", "납품", MachineKind.Export, BuildCategory.Logistics, BuildZone.Factory, one, 1, 40, 0, 0, "#7a6a2a",
                 "세력 계약에 맞는 포션은 계약으로, 나머지는 도매(정가 70%, 같은 품목을 많이 넘길수록 하락·연구 포인트 없음)로 판매");
+            Add("MAC_TELEPORT", "에테르 텔레포트 패드", "텔레", MachineKind.Teleporter, BuildCategory.Logistics, BuildZone.Any, one, 3, 800, 25, 0, "#3a2a6a",
+                "같은 채널 패드로 아이템을 즉시 전송(배선 불필요). 뒤·옆으로 받아 상대 패드 앞으로 배출. 클릭해 채널(1~4) 변경. 전송 중 마력 25", false, 250);
             Add("MAC_TRASH", "폐기통", "폐기", MachineKind.Trash, BuildCategory.Logistics, BuildZone.Factory, one, 1, 10, 0, 0, "#3a3a3a",
                 "무엇이든 폐기. 슬러지는 1개당 환경 부담금 5G");
             // 가공·연성
@@ -110,7 +112,7 @@ namespace GearPotion.EditorTools
             Add("MAC_COLDSHELF", "냉장 마법 진열대", "냉장", MachineKind.Shelf, BuildCategory.Shop, BuildZone.Shop, one, 2, 90, 0, 0, "#4a7a9a",
                 "신선도 유지로 판매가 +15%", false, 100, param: 4f, priceBonus: 1.15f);
             Add("MAC_VIP", "황금 VIP 쇼케이스", "VIP", MachineKind.Shelf, BuildCategory.Shop, BuildZone.Shop, one, 3, 250, 0, 0, "#c9a227",
-                "단일 슬롯, 판매가 +30%. 고급 포션 전용 진열에 추천", false, 200, param: 1f, priceBonus: 1.3f);
+                "단일 슬롯, 판매가 +30%. 손님이 사면 흥정 미니게임(성공 +25%)", false, 200, param: 1f, priceBonus: 1.3f);
             Add("MAC_COUNTER", "마도 자동 계산대", "계산대", MachineKind.Counter, BuildCategory.Shop, BuildZone.Shop, new Vector2Int(2, 1), 1, 0, 0, 0, "#5a3a2a",
                 "손님이 결제하는 곳", removable: false);
             // 마력

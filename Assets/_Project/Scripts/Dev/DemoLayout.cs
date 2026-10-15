@@ -28,8 +28,11 @@ namespace GearPotion
             if (old != null) grid.Remove(old);
             Place(grid, "MAC_SPLITTER", 8, 4, 3);
             // 분배기 왼쪽 출력은 납품 상자로 (세력 계약 / 도매)
+            // 분배기 왼쪽 출력 → 텔레포트 패드(채널 1) → 오른쪽 끝 패드 → 납품 상자 (세력 계약 / 도매)
             Place(grid, "MAC_BELT", 9, 4, 0);
-            Place(grid, "MAC_EXPORT", 10, 4, 0);
+            Place(grid, "MAC_TELEPORT", 10, 4, 0);
+            Place(grid, "MAC_TELEPORT", 25, 6, 3);
+            Place(grid, "MAC_EXPORT", 25, 5, 0);
 
             // ② 마나 엘릭서 라인 (배관 레이어)
             Place(grid, "MAC_CRATE", 14, 9, 0, Ing(db, "MAT_05"));
@@ -42,7 +45,7 @@ namespace GearPotion
             Place(grid, "MAC_CAULDRON", 20, 6, 3);
             Place(grid, "MAC_PIPE", 21, 5, 0);
             Place(grid, "MAC_BOTTLER", 22, 4, 3);
-            Place(grid, "MAC_COLDSHELF", 23, 3, 0, 1);
+            Place(grid, "MAC_VIP", 23, 3, 0, 1);
             Place(grid, "MAC_CORE", 24, 8, 0);
             // 배관이 벨트 위를 지나가는 교차 예시 (서로 간섭하지 않음)
             Place(grid, "MAC_BELT", 18, 6, 1);

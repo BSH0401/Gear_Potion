@@ -40,6 +40,7 @@ namespace GearPotion
                     case "-blueprints": OpenBlueprints = true; break;
                     case "-bptest": BlueprintTest = true; break;
                     case "-notutorial": NoTutorial = true; break;
+                    case "-autohaggle": Haggle.Auto = true; break;
                     case "-tutorial": TutorialStart = (int)ParseF(next, 0f); break;
                     case "-hour": startHour = ParseF(next, -1f); break;
                     case "-unlockall": Research.UnlockAll = true; break;
@@ -122,13 +123,14 @@ namespace GearPotion
                     string path = Path.Combine(dir, $"shot_{n++:00}_{t:0}s.png");
                     ScreenCapture.CaptureScreenshot(path);
                     var gm = GameManager.Instance;
-                    Debug.Log($"[Dev] screenshot {path} tutorial={Tutorial.Step} day={gm.Clock.Day} time={gm.Clock.TimeText} gold={Economy.Gold} sold={Discoveries.TotalSold} " +
+                    Debug.Log($"[Dev] screenshot {path} haggling={(Haggle.Current != null ? 1 : 0)} tutorial={Tutorial.Step} day={gm.Clock.Day} time={gm.Clock.TimeText} gold={Economy.Gold} sold={Discoveries.TotalSold} " +
                               $"known={string.Join("/", Discoveries.Known)} buildings={GameManager.Grid.buildings.Count} items={ItemViews.ActiveCount} rating={Market.Rating:0.00} fires={Processor.FiresStarted} contracts={Contracts.Completed}/{Contracts.Active.Count} offers={Contracts.Offers.Count}");
                 }
             }
             if (quitAfter > 0f)
             {
                 while (Time.realtimeSinceStartup - start < quitAfter) yield return null;
+                Debug.Log($"[Dev] extras teleports={Teleporter.Transfers} haggle={Haggle.Wins}/{Haggle.Losses}");
                 Debug.Log($"[Dev] quit contracts={Contracts.Completed} ranks={string.Join(",", Contracts.Rank)} day={GameManager.Instance.Clock.Day} gold={Economy.Gold} sold={Discoveries.TotalSold} revenue={Discoveries.TotalRevenue} best={Discoveries.BestGrade}");
                 Application.Quit();
             }

@@ -65,6 +65,7 @@ namespace GearPotion
             MachineKind.Counter => new Counter(),
             MachineKind.Pipe => new Pipe(),
             MachineKind.Cooler => new Cooler(),
+            MachineKind.Teleporter => new Teleporter(),
             _ => new Processor(),
         };
 

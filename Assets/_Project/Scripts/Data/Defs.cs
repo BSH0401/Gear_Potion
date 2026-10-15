@@ -6,7 +6,7 @@ namespace GearPotion
     public enum MachineKind
     {
         Belt, Splitter, Sorter, Crate, Crusher, Extractor, Filter, Distiller, Cauldron, Bottler,
-        SlimeVat, Trash, Export, Shelf, ManaCore, Counter, Pipe, Cooler, Overclock,
+        SlimeVat, Trash, Export, Shelf, ManaCore, Counter, Pipe, Cooler, Overclock, Teleporter,
     }
 
     public enum BuildZone { Factory, Shop, Any }

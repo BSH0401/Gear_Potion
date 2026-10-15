@@ -14,7 +14,7 @@ namespace GearPotion.EditorTools
         const string Root = "Assets/_Project";
         const string ScenePath = Root + "/Scenes/Atelier.unity";
         const string BuildPath = "Builds/Windows/GearPotion.exe";
-        public const string Version = "0.8.0";
+        public const string Version = "0.9.0";
 
         [MenuItem("Gear & Potion/Setup Project")]
         public static void Setup()

@@ -1,7 +1,7 @@
 # 기어 앤 포션 (Gear & Potion: Automate the Atelier)
 
 2D 그리드 기반 **마도 자동화 공방 + 포션 상점 타이쿤** — Unity 6 (6000.3.11f1) · 2D URP · C# 1인 개발 프로젝트.
-Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으로 만든 **수직 슬라이스(v0.8.0)** 입니다.
+Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으로 만든 **수직 슬라이스(v0.9.0)** 입니다.
 
 뒷방(공방)에서는 투입구 → 분쇄기 → 추출기 → 여과기 → 병입기가 벨트와 마력 배관으로 이어져 돌아가고,
 벽 너머 앞가게(매장)에서는 손님이 진열대의 포션을 사 갑니다.
@@ -41,7 +41,8 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 | 3.2 5대 원소 벡터 · 불순물 · 분쇄/추출/여과/증류/합성/병입 | ✅ `Alchemy.cs` |
 | 3.2 순도 등급 C~SSS 및 가격 배율 | ✅ |
 | 3.2 폐기물 재활용 (슬러지 → 슬라임 배양조 → 마력 결정) | ✅ |
-| 3.3 진열대(나무·냉장·VIP) + 벨트 자동 보충, 가격 배율 | ✅ |
+| 3.3 진열대(나무·냉장·VIP) + 벨트 자동 보충, 가격 배율, VIP 흥정 미니게임 | ✅ |
+| 4.2 MAC_10 에테르 텔레포트 패드 | ✅ `Teleporter.cs` — v0.9.0 |
 | 3.3 손님 FSM (입장 → 가성비 판정 → 결제 → 별점) · 평판 → 방문객 수 | ✅ 주민·초보/정예 모험가·학회 감정사·암시장 브로커 |
 | 2.2 하루 4페이즈 · 왕국 뉴스(트렌드/시세) · 심야 손익계산서 | ✅ |
 | 마력 전력망 (공급/소비, 부족 시 감속, 유지비) | ✅ (룬 전선 배선은 생략 — 전역 전력망) |
@@ -105,6 +106,13 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 - **마력 배관 발광**: 원액이 흐르는 배관은 원액 색으로 은은하게 빛납니다.
 - 합성 가마가 원액을 섞을 때 보글거리는 소리가 납니다.
 
+## 텔레포트 패드 · VIP 흥정 (v0.9.0)
+
+- **에테르 텔레포트 패드**(MAC_10, 800G, 연구 250RP, 전송 중 마력 25): 같은 채널(1~4, 클릭해 변경) 패드끼리 아이템을 즉시 보냅니다.
+  뒤·옆으로 받은 아이템을 같은 채널의 다른 패드들에 번갈아 보내고, 받은 패드는 자기 앞(▶)으로 내보냅니다. 마력이 절반 이하면 멈춥니다.
+- **VIP 흥정**(GDD 3.3): 황금 VIP 쇼케이스 상품을 산 손님이 계산대에 오면 흥정 창이 뜹니다. 움직이는 바늘이 초록 구간에 있을 때
+  **H**(흥정!)를 누르면 +25%, 빗나가면 -10%와 별 하나 감점, 6초 동안 아무것도 안 하면 정가 결제. 한 번에 한 손님만 흥정합니다.
+
 ## 튜토리얼 (v0.8.0)
 
 새 게임을 시작하면 왼쪽 위에 9단계 안내가 나옵니다(GDD 5개월 차 '초반 15분 튜토리얼 가이드').
@@ -136,7 +144,7 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 
 - 원재료 7종: 이슬 맺힌 약초, 화염 뿌리, 바람 민들레 홀씨, 구리빛 마광석, 동굴 발광 버섯, 얼음 정령의 파편, 용암 도마뱀의 독샘
 - 포션 7종(+실패작): 하급 치유 물약, 화염 활력제, 강철 피부 포션, 고순도 마나 엘릭서, 폭풍 질주 포션, 드래곤 브레스 영약, 액상 현자의 돌 (탁한 물약)
-- 설비 22종 — 밸런스 원본은 `Assets/_Project/Editor/DefaultContent.cs` (Setup Project 실행 시 에셋에 반영)
+- 설비 23종 — 밸런스 원본은 `Assets/_Project/Editor/DefaultContent.cs` (Setup Project 실행 시 에셋에 반영)
 
 ## 프로젝트 구조
 
@@ -151,4 +159,4 @@ Assets/_Project/
   Scripts/Dev/   DevCommandLine(자동 테스트 플래그), DemoLayout
 ```
 
-개발용 실행 플래그: `-tutorial N -notutorial -hour 20 -bptest -blueprints -autocontract -contracts -autostart -continue -demo -timescale N -autonext -unlockall -gold N -rp N -nosave -shots 3,30 -shotdir 경로 -quitafter 초 -research -pipeview`
+개발용 실행 플래그: `-autohaggle -tutorial N -notutorial -hour 20 -bptest -blueprints -autocontract -contracts -autostart -continue -demo -timescale N -autonext -unlockall -gold N -rp N -nosave -shots 3,30 -shotdir 경로 -quitafter 초 -research -pipeview`

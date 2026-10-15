@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_TELEPORT
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_TELEPORT
+  displayName: "\uC5D0\uD14C\uB974 \uD154\uB808\uD3EC\uD2B8 \uD328\uB4DC"
+  shortName: "\uD154\uB808"
+  kind: 19
+  category: 0
+  zone: 2
+  size: {x: 1, y: 1}
+  tier: 3
+  cost: 800
+  mana: 25
+  processTime: 0
+  param: 0
+  priceBonus: 1
+  color: {r: 0.22745098, g: 0.16470589, b: 0.41568628, a: 1}
+  description: "\uAC19\uC740 \uCC44\uB110 \uD328\uB4DC\uB85C \uC544\uC774\uD15C\uC744
+    \uC989\uC2DC \uC804\uC1A1(\uBC30\uC120 \uBD88\uD544\uC694). \uB4A4\xB7\uC606\uC73C\uB85C
+    \uBC1B\uC544 \uC0C1\uB300 \uD328\uB4DC \uC55E\uC73C\uB85C \uBC30\uCD9C. \uD074\uB9AD\uD574
+    \uCC44\uB110(1~4) \uBCC0\uACBD. \uC804\uC1A1 \uC911 \uB9C8\uB825 25"
+  unlockedByDefault: 0
+  researchCost: 250
+  removable: 1
