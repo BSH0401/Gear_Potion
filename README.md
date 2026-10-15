@@ -1,7 +1,7 @@
 # 기어 앤 포션 (Gear & Potion: Automate the Atelier)
 
 2D 그리드 기반 **마도 자동화 공방 + 포션 상점 타이쿤** — Unity 6 (6000.3.11f1) · 2D URP · C# 1인 개발 프로젝트.
-Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으로 만든 **수직 슬라이스(v0.4.0)** 입니다.
+Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으로 만든 **수직 슬라이스(v0.5.0)** 입니다.
 
 뒷방(공방)에서는 투입구 → 분쇄기 → 추출기 → 여과기 → 병입기가 벨트와 마력 배관으로 이어져 돌아가고,
 벽 너머 앞가게(매장)에서는 손님이 진열대의 포션을 사 갑니다.
@@ -28,7 +28,7 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 | 설비 클릭 | 투입구 재료 · 진열대 가격 배율 · 분류기 조건 · 합성 가마 혼합 모드 변경 |
 | Space · 1x/2x/3x | 일시정지 · 배속 |
 | Tab | 뷰 전환: 일반 → 배관 뷰(설비 반투명, 배관·원액 강조) → 효율 히트맵 |
-| T · C · F1 | 연구 · 세력 계약 · 도움말 |
+| T · C · B · F1 | 연구 · 세력 계약 · 청사진 · 도움말 |
 | WASD · 휠 · 휠버튼 드래그 · Home | 카메라 |
 
 ## 구현 범위 (GDD 대비)
@@ -52,7 +52,7 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 | 5.1 배관 투시 뷰 (Tab) | ✅ |
 | 3.1 오버클럭 태엽 · 과열/화재 · 얼음 정령석/냉각수 배관 | ✅ `Heat.cs` — v0.3.0 |
 | 3.3 4대 세력 대량 납품 계약 · 세력 평판/혜택 | ✅ `Contracts.cs` — v0.4.0 (비밀 지하실은 의심 감소 혜택으로 대체) |
-| 5.1 청사진 복사/붙여넣기 | ⏳ 다음 단계 |
+| 5.1 청사진 복사/붙여넣기 (회전, 프리셋 저장) | ✅ `Blueprints.cs` — v0.5.0 |
 | 2D URP 발광 조명 · 실제 아트/사운드 | ⏳ 폴리싱 단계 |
 
 ## 배관 레이어 (v0.2.0)
@@ -87,6 +87,14 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 
 - 성공할 때마다 그 세력 평판 +1(의뢰량·보상 증가), 기한을 넘기면 평판 -1. 의뢰는 날짜·평판으로 정해지므로 이어하기해도 같습니다.
 
+## 청사진 (v0.5.0)
+
+- **B** 또는 하단 **B 청사진** 버튼 → `+ 영역 복사해서 새 청사진` → 공방에서 설비 묶음을 좌클릭 드래그로 감싸면 저장됩니다.
+- 영역 안에 완전히 들어오는 설비·배관이 방향·설정(투입 재료, 가격 배율, 분류 조건, 혼합 모드)·오버클럭까지 그대로 담깁니다. 계산대는 제외.
+- 저장 직후 커서에 묶음이 붙습니다. **R**(Shift+R 역방향)로 회전, 좌클릭으로 설치(반복 가능), 우클릭/Esc로 종료.
+- 설치 가능한 칸의 설비만 골라 비용을 한 번에 지불하고, 막힌 칸·미해금 설비는 건너뜁니다(미리보기에서 빨간색).
+- 청사진은 최대 8개, 세이브와 별개 파일(`gearpotion_blueprints.json`)이라 모든 공방에서 공용입니다.
+
 ## 콘텐츠
 
 - 원재료 7종: 이슬 맺힌 약초, 화염 뿌리, 바람 민들레 홀씨, 구리빛 마광석, 동굴 발광 버섯, 얼음 정령의 파편, 용암 도마뱀의 독샘
@@ -106,4 +114,4 @@ Assets/_Project/
   Scripts/Dev/   DevCommandLine(자동 테스트 플래그), DemoLayout
 ```
 
-개발용 실행 플래그: `-autocontract -contracts -autostart -continue -demo -timescale N -autonext -unlockall -gold N -rp N -nosave -shots 3,30 -shotdir 경로 -quitafter 초 -research -pipeview`
+개발용 실행 플래그: `-bptest -blueprints -autocontract -contracts -autostart -continue -demo -timescale N -autonext -unlockall -gold N -rp N -nosave -shots 3,30 -shotdir 경로 -quitafter 초 -research -pipeview`

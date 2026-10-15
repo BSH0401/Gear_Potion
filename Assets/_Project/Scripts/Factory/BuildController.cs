@@ -92,6 +92,7 @@ namespace GearPotion
             bool pipeFirst = grid.View == ViewMode.Pipes || (Selected && Selected.kind == MachineKind.Pipe);
             Hovered = overUI ? null : pipeFirst ? (Building)pipe ?? ground : ground ?? pipe;
             HoveredSecondary = overUI || Hovered == null ? null : Hovered == ground ? pipe : ground;
+            if (BlueprintTool.Active) return; // 청사진 도구가 마우스를 사용 중
 
             if (kb != null && kb.qKey.wasPressedThisFrame && Hovered != null && Hovered.def.removable)
             {

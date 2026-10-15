@@ -12,7 +12,7 @@ namespace GearPotion
     /// </summary>
     public static class DevCommandLine
     {
-        public static bool AutoStart, AutoContinue, AutoNextDay, Demo, OpenResearch, PipeView, AutoContract, OpenContracts, OpenHelp;
+        public static bool AutoStart, AutoContinue, AutoNextDay, Demo, OpenResearch, PipeView, AutoContract, OpenContracts, OpenHelp, OpenBlueprints, BlueprintTest;
         public static float TimeScale = 1f;
         public static int ExtraGold, ExtraRP;
 
@@ -35,6 +35,8 @@ namespace GearPotion
                     case "-autocontract": AutoContract = true; break;
                     case "-contracts": OpenContracts = true; break;
                     case "-help": OpenHelp = true; break;
+                    case "-blueprints": OpenBlueprints = true; break;
+                    case "-bptest": BlueprintTest = true; break;
                     case "-unlockall": Research.UnlockAll = true; break;
                     case "-nosave": SaveSystem.Disabled = true; break;
                     case "-demo": Demo = true; AutoStart = true; break;
@@ -47,6 +49,7 @@ namespace GearPotion
                 }
             }
             if (Demo) GameClock.DayStarted += BuildDemoOnce;
+            if (BlueprintTest) GameClock.DayStarted += RunBlueprintTestOnce;
             if (AutoContract) GameClock.DayStarted += _ => { while (Contracts.Offers.Count > 0 && Contracts.Active.Count < Contracts.MaxActive) Contracts.Accept(Contracts.Offers[0]); };
             if (shots != null || quitAfter > 0f) gm.StartCoroutine(Automation(shots, shotDir, quitAfter));
         }
@@ -55,6 +58,27 @@ namespace GearPotion
         {
             GameClock.DayStarted -= BuildDemoOnce;
             DemoLayout.Build(GameManager.Grid);
+        }
+
+        /// <summary>-demo -bptest: 버섯 라인(14~19, 8~9)을 복사해 확장 부지에 그대로/180° 회전해 붙여넣는다.</summary>
+        static void RunBlueprintTestOnce(int day)
+        {
+            GameClock.DayStarted -= RunBlueprintTestOnce;
+            var grid = GameManager.Grid;
+            grid.SetExpansion(3);
+            GameManager.Instance.CameraRig.Fit(grid.Width);
+            var bp = BlueprintTool.Capture(new Vector2Int(14, 8), new Vector2Int(19, 9));
+            if (bp == null) { Debug.LogError("[Dev] blueprint capture empty"); return; }
+            BlueprintLibrary.Add(bp);
+            Debug.Log($"[Dev] blueprint captured {bp.entries.Count} entries {bp.width}x{bp.height} cost={bp.Cost}");
+            int a = BlueprintTool.Paste(bp, new Vector2Int(26, 8));
+            var rotated = bp.Clone();
+            rotated.RotateCCW();
+            rotated.RotateCCW();
+            int b = BlueprintTool.Paste(rotated, new Vector2Int(26, 6));
+            var tall = bp.Clone();
+            tall.RotateCCW();
+            Debug.Log($"[Dev] blueprint pasted straight={a} rotated180={b} rotated90size={tall.width}x{tall.height}");
         }
 
         static float ParseF(string s, float fallback) =>

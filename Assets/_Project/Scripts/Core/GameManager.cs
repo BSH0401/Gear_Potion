@@ -42,6 +42,7 @@ namespace GearPotion
             new GameObject("Sfx").AddComponent<Sfx>();
             CameraRig = Camera.main.gameObject.AddComponent<CameraRig>();
             Builder = gameObject.AddComponent<BuildController>();
+            gameObject.AddComponent<BlueprintTool>();
             Hud = new GameObject("HUD").AddComponent<HUD>();
             GameClock.DayEnded += OnDayEnded;
             GameClock.DayStarted += Contracts.OnDayStart;
@@ -65,6 +66,7 @@ namespace GearPotion
             if (DevCommandLine.PipeView) Grid.View = ViewMode.Pipes;
             if (DevCommandLine.OpenContracts && InGame) Hud.ShowContracts();
             if (DevCommandLine.OpenHelp && InGame) Hud.ShowHelp();
+            if (DevCommandLine.OpenBlueprints && InGame) Hud.ShowBlueprints();
         }
 
         // ───────────── 게임 흐름 ─────────────

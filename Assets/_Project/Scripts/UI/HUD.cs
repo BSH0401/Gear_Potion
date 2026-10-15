@@ -22,7 +22,7 @@ namespace GearPotion
         RectTransform dockItems;
         readonly List<(Button button, MachineSO def)> dockButtons = new();
         readonly Button[] tabButtons = new Button[4];
-        Button removeButton, researchButton, contractButton;
+        Button removeButton, researchButton, contractButton, blueprintButton;
         BuildCategory currentTab = BuildCategory.Logistics;
         GameObject hudGroup;
 
@@ -88,6 +88,7 @@ namespace GearPotion
             }
             removeButton = UIFactory.Button(dock, "X 철거", new Vector2(0f, 1f), new Vector2(105f + 4 * 190f, -28f), new Vector2(180f, 42f),
                 () => { GameManager.Instance.Builder.ToggleRemoveMode(); }, 22);
+            blueprintButton = UIFactory.Button(dock, "B 청사진", new Vector2(0f, 1f), new Vector2(105f + 5 * 190f, -28f), new Vector2(180f, 42f), ShowBlueprints, 22);
             researchButton = UIFactory.Button(dock, "연구", new Vector2(1f, 1f), new Vector2(-310f, -28f), new Vector2(190f, 42f), ShowResearch, 22);
             UIFactory.Button(dock, "도움말 F1", new Vector2(1f, 1f), new Vector2(-110f, -28f), new Vector2(190f, 42f), ShowHelp, 22);
             contractButton = UIFactory.Button(dock, "계약 C", new Vector2(1f, 1f), new Vector2(-510f, -28f), new Vector2(190f, 42f), ShowContracts, 22);
@@ -181,7 +182,8 @@ namespace GearPotion
             contractButton.GetComponentInChildren<Text>().text = Contracts.Offers.Count > 0 && Contracts.Active.Count < Contracts.MaxActive
                 ? $"계약 C <color=#ffd27a>({Contracts.Offers.Count})</color>" : $"계약 C ({Contracts.Active.Count}/{Contracts.MaxActive})";
 
-            modeText.text = builder.RemoveMode ? "<color=#ff8877>철거 모드</color> — 클릭해 철거 (75% 환불)" :
+            blueprintButton.image.color = BlueprintTool.Active ? new Color(0.55f, 0.9f, 1f) : Color.white;
+            modeText.text = BlueprintTool.Active ? BlueprintTool.Instance.StatusText ?? "" : builder.RemoveMode ? "<color=#ff8877>철거 모드</color> — 클릭해 철거 (75% 환불)" :
                 builder.Selected ? $"<color=#ffd27a>{builder.Selected.displayName}</color> — R 회전 · 우클릭 취소" +
                                    (builder.GhostReason != null ? $"  <color=#ff8877>({builder.GhostReason})</color>" : "") :
                 grid.View == ViewMode.Heatmap ? "<color=#9f9>효율 히트맵 뷰</color> (Tab)" :
@@ -246,6 +248,7 @@ namespace GearPotion
             if (kb.digit4Key.wasPressedThisFrame) { currentTab = BuildCategory.Shop; Rebuild(); }
             if (kb.tKey.wasPressedThisFrame) ShowResearch();
             if (kb.cKey.wasPressedThisFrame) ShowContracts();
+            if (kb.bKey.wasPressedThisFrame) ShowBlueprints();
         }
     }
 
