@@ -26,7 +26,7 @@ MonoBehaviour:
   param: 0
   priceBonus: 1
   color: {r: 0.2901961, g: 0.41568628, b: 0.47843137, a: 1}
-  description: "\uC778\uC811 \uBC30\uAD00\uC758 \uC6D0\uC561\uC744 \uC720\uB9AC\uBCD1(1G)\uC5D0
+  description: "\uC778\uC811 \uBC30\uAD00\uC758 \uC6D0\uC561\uC744 \uC720\uB9AC\uBCD1(2G)\uC5D0
     \uB2F4\uC544 \uD3EC\uC158\uC73C\uB85C \uD655\uC815. \uC6D0\uC18C \uC870\uAC74\uC73C\uB85C
     \uC885\uB958\uAC00 \uACB0\uC815\uB428"
   unlockedByDefault: 1

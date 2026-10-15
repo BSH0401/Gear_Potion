@@ -480,8 +480,9 @@ namespace GearPotion
                 status = BuildingStatus.Working;
                 return true;
             }
-            int value = it.kind == ItemKind.Crystal ? it.BaseValue : Mathf.Max(1, Mathf.RoundToInt(Market.PotionPrice(it) * 0.7f));
-            Economy.Earn(value, LedgerEntry.Bulk);
+            int value = Market.SellWholesale(it);
+            // 도매는 연구 포인트를 주지 않는다 (RP는 매장·계약 판매로만)
+            Economy.Earn(value, LedgerEntry.Bulk, false);
             Fx.Float(center, $"+{value}G", new Color(1f, 0.85f, 0.3f));
             it.Hide();
             sold++;
@@ -493,7 +494,8 @@ namespace GearPotion
         public override void Tick(float dt, float power) { }
         public override string Info()
         {
-            var s = base.Info() + "\n진행 중인 세력 계약에 맞는 포션은 계약으로, 나머지는 도매(70%)로 판매";
+            var s = base.Info() + "\n진행 중인 세력 계약에 맞는 포션은 계약으로, 나머지는 도매로 판매" +
+                    $"\n<size=21><color=#bbb>도매가 정가의 {Market.WholesaleBase * 100f:0}% — 같은 품목을 하루 {Market.WholesaleSaturation}개 넘길수록 최저 {Market.WholesaleBase * Market.WholesaleFloor * 100f:0}%까지 하락 (연구 포인트 없음)</color></size>";
             s += $"\n계약 납품 {delivered}개 · 도매 {sold}개 / {revenue}G";
             foreach (var c in Contracts.Active) s += $"\n  <color=#ffd27a>[{Contracts.FactionNames[c.faction]}]</color> {c.Short} {c.delivered}/{c.quantity}";
             return s;

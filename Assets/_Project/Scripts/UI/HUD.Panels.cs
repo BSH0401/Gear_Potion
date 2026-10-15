@@ -138,7 +138,7 @@ namespace GearPotion
             var p = UIFactory.Rect("Panel", o, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1180f, 900f));
             UIFactory.PanelBg(p, UIFactory.PanelLight);
             UIFactory.Label(UIFactory.Rect("Head", p, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(1100f, 56f)),
-                $"<b>마도 공학 연구</b>   <size=26><color=#a8f0c0>보유 {Economy.ResearchPoints} RP</color> · 판매 10G당 1RP</size>", 36, UIFactory.Accent);
+                $"<b>마도 공학 연구</b>   <size=26><color=#a8f0c0>보유 {Economy.ResearchPoints} RP</color> · 판매 {Economy.GoldPerRP}G당 1RP</size>", 36, UIFactory.Accent);
             UIFactory.Button(p, "닫기", new Vector2(1f, 1f), new Vector2(-80f, -44f), new Vector2(120f, 50f), CloseResearch, 24);
 
             var entries = new List<(string id, string name, string desc, int cost, bool done, bool gold, System.Action unlock)>();
@@ -235,8 +235,8 @@ namespace GearPotion
                 "· 얼음 정령석을 맞닿게 두면 -6/s, 물 원소 원액이 흐르는 배관(냉각수)이 닿으면 -5/s.\n\n" +
                 "<b><color=#ffd27a>연금술</color></b>\n" +
                 "· 모든 재료는 화·수·풍·지·에테르 원소와 불순물(%)을 가집니다. 병입기에서 원소 조건으로 포션이 결정됩니다.\n" +
-                "· 분쇄: 주 원소 x1.3, 불순물 +10%p · 여과: 불순물 -20%p · 증류: 주 원소만 남기고 x1.5 · 합성 가마: 원액 2개 합산\n" +
-                "· 순도 = 100 - 불순물. C(40↓) x0.6 · B x1.0 · A(70+) x1.45 · S(90+) x2.1 · SSS(99+) x3.5\n" +
+                "· 분쇄: 주 원소 x1.3, 불순물 +10%p · 여과: 불순물 -20%p(최소 3%) · 증류: 주 원소만 남기고 x1.5 · 합성 가마: 원액 2개 합산\n" +
+                "· 순도 = 100 - 불순물. C(40↓) x0.6 · B x1.0 · A(70+) x1.45 · S(90+) x2.1 · SSS(99+, 가마 대성공 필요) x3.5\n" +
                 "· 하급 치유(수10+지5) · 화염 활력제(화20) · 마나 엘릭서(수25+에테르15) · 폭풍 질주(풍30+수15)\n" +
                 "  드래곤 브레스(화60+에테르30) · 액상 현자의 돌(전 원소 50 + 불순물 0%)\n\n" +
                 "<b><color=#ffd27a>세력 계약 (C)</color></b>\n" +
@@ -244,7 +244,7 @@ namespace GearPotion
                 "· 세력별 첫 성공 시 영구 혜택(재료 해금·할인·설계도·의심 감소). 기한을 넘기면 평판 -1.\n\n" +
                 "<b><color=#ffd27a>하루</color></b>\n" +
                 "· 06~09 새벽(시계 0.5배) 정비 → 09 오픈 → 17 피크(정예 모험가·학회 감정사·암시장 브로커) → 22 마감 → 24 정산\n" +
-                "· 마력(MP) 소비가 공급을 넘으면 모든 설비가 느려집니다. 마나 코어를 추가하세요. (하루 유지비 1G/MP)\n" +
+                "· 마력(MP) 소비가 공급을 넘으면 모든 설비가 느려집니다. 마나 코어를 추가하세요. (하루 유지비 3G/MP)\n" +
                 "· 별점이 높을수록 다음 날 손님이 늘어납니다. 암시장 거래는 3배 가격이지만 의심 수치 100이면 검문 벌금!";
             UIFactory.Label(UIFactory.Rect("Body", p, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -90f), new Vector2(1200f, 700f)),
                 text, 18, UIFactory.TextColor, TextAnchor.UpperLeft, true);

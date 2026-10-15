@@ -27,8 +27,8 @@ namespace GearPotion
         public static DayLedger Today = new();
         public static event Action<int> GoldChanged;
 
-        /// <summary>판매 10G당 연구 포인트 1.</summary>
-        public const int GoldPerRP = 10;
+        /// <summary>판매 20G당 연구 포인트 1 (v0.7 밸런스: 10G → 20G).</summary>
+        public const int GoldPerRP = 20;
         static int rpRemainder;
 
         public static bool CanAfford(int amount) => Gold >= amount;

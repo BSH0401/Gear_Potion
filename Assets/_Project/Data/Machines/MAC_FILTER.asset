@@ -26,8 +26,8 @@ MonoBehaviour:
   param: 0
   priceBonus: 1
   color: {r: 0.22745098, g: 0.3529412, b: 0.47843137, a: 1}
-  description: "\uC6D0\uC561 \uBD88\uC21C\uBB3C -20%p. \uC67C\uCABD \uCE21\uBA74\uC73C\uB85C
-    \uC2AC\uB7EC\uC9C0 1\uAC1C \uBC30\uCD9C"
+  description: "\uC6D0\uC561 \uBD88\uC21C\uBB3C -20%p(\uCD5C\uC18C 3%). \uC67C\uCABD
+    \uCE21\uBA74\uC73C\uB85C \uC2AC\uB7EC\uC9C0 1\uAC1C \uBC30\uCD9C"
   unlockedByDefault: 0
   researchCost: 80
   removable: 1

@@ -53,6 +53,7 @@ namespace GearPotion
             if (Demo) GameClock.DayStarted += BuildDemoOnce;
             if (BlueprintTest) GameClock.DayStarted += RunBlueprintTestOnce;
             if (startHour >= 0f) GameClock.DayStarted += SetHourOnce;
+            if (quitAfter > 0f) GameClock.DayEnded += LogDay;
             if (AutoContract) GameClock.DayStarted += _ => { while (Contracts.Offers.Count > 0 && Contracts.Active.Count < Contracts.MaxActive) Contracts.Accept(Contracts.Offers[0]); };
             if (shots != null || quitAfter > 0f) gm.StartCoroutine(Automation(shots, shotDir, quitAfter));
         }
@@ -82,6 +83,15 @@ namespace GearPotion
             var tall = bp.Clone();
             tall.RotateCCW();
             Debug.Log($"[Dev] blueprint pasted straight={a} rotated180={b} rotated90size={tall.width}x{tall.height}");
+        }
+
+        /// <summary>밸런스 확인용 일일 결산 로그.</summary>
+        static void LogDay(int day)
+        {
+            var l = Economy.Today;
+            Debug.Log($"[Dev] day{day} retail={l[LedgerEntry.Retail]} bulk={l[LedgerEntry.Bulk]} contract={l[LedgerEntry.Contract]} " +
+                      $"ingredients={l[LedgerEntry.Ingredients]} bottles={l[LedgerEntry.Bottles]} upkeep={l[LedgerEntry.ManaUpkeep]} " +
+                      $"net={l.Net} customers={l.customers} served={l.served} sold={l.potionsSold} rp={l.rpEarned} gold={Economy.Gold} rating={Market.Rating:0.00}");
         }
 
         static void SetHourOnce(int day)

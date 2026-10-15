@@ -31,6 +31,37 @@ namespace GearPotion
         public static int ShelfPrice(Item it, Shelf shelf) =>
             Mathf.Max(1, Mathf.RoundToInt(PotionPrice(it) * shelf.Markup * shelf.def.priceBonus));
 
+        // ───────────── 도매(납품 상자) 수요 포화 ─────────────
+        public const float WholesaleBase = 0.7f;
+        public const int WholesaleSaturation = 50;
+        public const float WholesaleFloor = 0.2f;
+        static readonly Dictionary<string, int> wholesaleToday = new();
+
+        static string WholesaleKey(Item it) => it.kind == ItemKind.Crystal ? "crystal" : it.potion ? it.potion.id : "?";
+
+        /// <summary>
+        /// 상인 연합 도매가: 기본 70%, 같은 품목을 하루에 많이 넘길수록 값이 떨어진다
+        /// (50개째에 바닥 20%). 매장 손님 없이 생산량 전부를 돈으로 바꾸는 것을 막는다.
+        /// </summary>
+        public static float WholesaleRate(Item it)
+        {
+            wholesaleToday.TryGetValue(WholesaleKey(it), out int n);
+            return WholesaleBase * Mathf.Max(WholesaleFloor, 1f - (float)n / WholesaleSaturation);
+        }
+
+        public static int SellWholesale(Item it)
+        {
+            float rate = WholesaleRate(it);
+            int baseValue = it.kind == ItemKind.Crystal ? it.BaseValue : PotionPrice(it);
+            var key = WholesaleKey(it);
+            wholesaleToday.TryGetValue(key, out int n);
+            wholesaleToday[key] = n + 1;
+            // 결정은 정가 35G 기준이라 기본 배율을 되돌려 계산
+            return Mathf.Max(1, Mathf.RoundToInt(baseValue * (it.kind == ItemKind.Crystal ? rate / WholesaleBase : rate)));
+        }
+
+        public static void ResetDaily() => wholesaleToday.Clear();
+
         /// <summary>암시장 브로커는 정가(B급 기준)의 3배를 낸다.</summary>
         public static int BlackMarketPrice(Item it) =>
             Mathf.Max(12, (it.potion ? it.potion.basePrice : 4)) * 3;

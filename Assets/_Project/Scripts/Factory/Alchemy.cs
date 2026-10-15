@@ -12,6 +12,8 @@ namespace GearPotion
         public const float CrushAmplify = 1.3f;
         public const float CrushImpurity = 10f;
         public const float FilterRemoval = 20f;
+        /// <summary>여과로는 이 아래로 못 내린다 → SSS(순도 99+)는 합성 가마 대성공 보너스로만.</summary>
+        public const float FilterFloor = 3f;
         public const float DistillConcentrate = 1.5f;
         public const float GreatSuccessChance = 0.15f;
         public const float GreatSuccessBonus = 8f;
@@ -37,11 +39,11 @@ namespace GearPotion
             return r;
         }
 
-        /// <summary>원심 여과: 불순물 -20%p. 슬러지는 호출 측에서 따로 배출.</summary>
+        /// <summary>원심 여과: 불순물 -20%p (최소 3%). 슬러지는 호출 측에서 따로 배출.</summary>
         public static Item Filter(Item it)
         {
             var r = it.Clone();
-            r.impurity = Mathf.Max(0f, r.impurity - FilterRemoval);
+            r.impurity = Mathf.Max(Mathf.Min(r.impurity, FilterFloor), r.impurity - FilterRemoval);
             r.view = null;
             return r;
         }

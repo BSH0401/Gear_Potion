@@ -22,7 +22,8 @@ MonoBehaviour:
     ventus: 50
     terra: 50
     aether: 50
-  maxImpurity: 0
+  maxImpurity: 3
   basePrice: 650
   color: {r: 1, g: 0.84705883, b: 0.2901961, a: 1}
-  note: "5\uB300 \uC6D0\uC18C \uAC01 50 + \uBD88\uC21C\uBB3C 0%"
+  note: "5\uB300 \uC6D0\uC18C \uAC01 50 + \uBD88\uC21C\uBB3C 3% \uC774\uD558(\uC5EC\uACFC
+    \uD55C\uACC4\uAE4C\uC9C0 \uC815\uC81C)"

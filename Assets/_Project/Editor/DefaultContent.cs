@@ -82,7 +82,7 @@ namespace GearPotion.EditorTools
             Add("MAC_CRATE", "원재료 투입구", "투입", MachineKind.Crate, BuildCategory.Logistics, BuildZone.Factory, one, 1, 20, 0, 2f, "#8a6a3a",
                 "선택한 원재료를 매입가를 지불하고 2초마다 배출. 클릭해 재료 변경");
             Add("MAC_EXPORT", "납품 상자", "납품", MachineKind.Export, BuildCategory.Logistics, BuildZone.Factory, one, 1, 40, 0, 0, "#7a6a2a",
-                "진행 중인 세력 계약에 맞는 포션은 계약 납품으로, 나머지 포션은 도매가(70%)로, 마력 결정은 35G에 판매");
+                "세력 계약에 맞는 포션은 계약으로, 나머지는 도매(정가 70%, 같은 품목을 많이 넘길수록 하락·연구 포인트 없음)로 판매");
             Add("MAC_TRASH", "폐기통", "폐기", MachineKind.Trash, BuildCategory.Logistics, BuildZone.Factory, one, 1, 10, 0, 0, "#3a3a3a",
                 "무엇이든 폐기. 슬러지는 1개당 환경 부담금 5G");
             // 가공·연성
@@ -91,13 +91,13 @@ namespace GearPotion.EditorTools
             Add("MAC_EXTRACTOR", "증기 압착 추출기", "추출", MachineKind.Extractor, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(2, 2), 1, 100, 5, 4f, "#3a6a4a",
                 "약초·분말 → 액체 원액(출력 포트에 배관 연결). 원소와 불순물 유지");
             Add("MAC_FILTER", "원심 불순물 여과기", "여과", MachineKind.Filter, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(2, 2), 2, 180, 8, 3.5f, "#3a5a7a",
-                "원액 불순물 -20%p. 왼쪽 측면으로 슬러지 1개 배출", false, 80);
+                "원액 불순물 -20%p(최소 3%). 왼쪽 측면으로 슬러지 1개 배출", false, 80);
             Add("MAC_DISTILLER", "증류탑", "증류", MachineKind.Distiller, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(1, 2), 2, 160, 6, 4f, "#5a4a7a",
                 "보조 원소를 제거하고 가장 높은 원소만 1.5배 농축", false, 120);
             Add("MAC_CAULDRON", "마도 합성 가마", "합성 가마", MachineKind.Cauldron, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(3, 3), 2, 300, 12, 5f, "#7a3a5a",
                 "원액 2개를 섞어 원소를 합산(불순물 평균). 15% 확률 대성공(순도 +8)", false, 160, param: 2f);
             Add("MAC_BOTTLER", "자동 병입 및 라벨기", "병입", MachineKind.Bottler, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(2, 2), 2, 220, 6, 2f, "#4a6a7a",
-                "인접 배관의 원액을 유리병(1G)에 담아 포션으로 확정. 원소 조건으로 종류가 결정됨");
+                "인접 배관의 원액을 유리병(2G)에 담아 포션으로 확정. 원소 조건으로 종류가 결정됨");
             Add("MAC_SLIME", "연금 슬라임 배양조", "슬라임", MachineKind.SlimeVat, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(2, 2), 3, 450, 10, 8f, "#4a7a3a",
                 "슬러지 2개를 먹여 마력 결정(35G) 1개 생산", false, 250);
             Add("MAC_COOLER", "얼음 정령석", "얼음석", MachineKind.Cooler, BuildCategory.Processing, BuildZone.Factory, one, 2, 60, 0, 0, "#6fc8e8",
@@ -118,7 +118,7 @@ namespace GearPotion.EditorTools
                 "원액(액체)을 옮기는 천장 배관 레이어. 벨트 위에 겹쳐 교차 설치 가능. 이어진 배관은 하나의 네트워크가 되어 " +
                 "출력 포트에 연결된 설비의 원액을 인접한 여과기·증류탑·가마·병입기로 자동 공급. 드래그로 연속 설치");
             Add("MAC_CORE", "마나 코어", "마나 코어", MachineKind.ManaCore, BuildCategory.Pipes, BuildZone.Factory, new Vector2Int(2, 2), 1, 200, 30, 0, "#2a5a8a",
-                "마력 전력망에 30 MP/s 공급. 하루 유지비 30G");
+                "마력 전력망에 30 MP/s 공급. 하루 유지비 90G");
             return list;
         }
 
@@ -139,7 +139,7 @@ namespace GearPotion.EditorTools
             list.Add(Make("POT_MANA", "고순도 마나 엘릭서", "마나", 2, new Elements(0, 25, 0, 0, 15), 75, "#5a7cff", "버섯 + 얼음 파편 합성"));
             list.Add(Make("POT_STORM", "폭풍 질주 포션", "질주", 2, new Elements(0, 15, 30, 0, 0), 95, "#5af0a0", "민들레 분쇄·증류 + 얼음 파편 합성"));
             list.Add(Make("POT_DRAGON", "드래곤 브레스 영약", "브레스", 3, new Elements(60, 0, 0, 0, 30), 220, "#d0203a", "독샘 다중 농축 + 2차 여과"));
-            list.Add(Make("POT_STONE", "액상 현자의 돌", "현자", 4, new Elements(50, 50, 50, 50, 50), 650, "#ffd84a", "5대 원소 각 50 + 불순물 0%", 0f));
+            list.Add(Make("POT_STONE", "액상 현자의 돌", "현자", 4, new Elements(50, 50, 50, 50, 50), 650, "#ffd84a", "5대 원소 각 50 + 불순물 3% 이하(여과 한계까지 정제)", 3f));
             murky = Make("POT_MURKY", "탁한 물약", "탁함", 0, default, 4, "#6b6a4a", "어떤 레시피에도 맞지 않는 실패작. 암시장 브로커가 산다");
             return list;
         }

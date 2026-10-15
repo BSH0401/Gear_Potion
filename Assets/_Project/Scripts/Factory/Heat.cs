@@ -20,7 +20,7 @@ namespace GearPotion
         public const float FireSpreadHeat = 25f;
         public const float OverclockSpeed = 1.5f;
         public const float OverclockHeat = 2f;
-        public const float FireElementHeat = 2f;
+        public const float FireElementHeat = 1f;
 
         public static int FiresStarted;
         static readonly List<Building> scratchCoolers = new();
@@ -42,7 +42,7 @@ namespace GearPotion
             MachineKind.Crusher => 3f,
             MachineKind.Extractor => 4f,
             MachineKind.Filter => 3f,
-            MachineKind.Distiller => 6f,
+            MachineKind.Distiller => 5f,
             MachineKind.Cauldron => 5f,
             MachineKind.Bottler => 2f,
             MachineKind.SlimeVat => 2f,

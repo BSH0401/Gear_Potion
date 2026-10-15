@@ -19,9 +19,9 @@ namespace GearPotion
             if (!Clock.Running || !Clock.ShopOpen) return;
             spawnTimer -= Time.deltaTime;
             if (spawnTimer > 0f) return;
-            float baseInterval = Clock.Phase == DayPhase.Evening ? 6.5f : 9f;
+            float baseInterval = Clock.Phase == DayPhase.Evening ? 8.5f : 12f;
             // 초반 며칠은 손님이 조금씩 늘어난다
-            float growth = Mathf.Lerp(0.75f, 1.25f, Mathf.InverseLerp(1, 10, Clock.Day));
+            float growth = Mathf.Lerp(0.6f, 1.3f, Mathf.InverseLerp(1, 10, Clock.Day));
             spawnTimer = baseInterval / (Market.TrafficMultiplier * growth) * Random.Range(0.7f, 1.3f);
             if (customers.Count < 14) Spawn();
         }

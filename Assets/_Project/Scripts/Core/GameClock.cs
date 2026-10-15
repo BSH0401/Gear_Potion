@@ -14,8 +14,8 @@ namespace GearPotion
         public const float StartMinute = 6 * 60f;
         public const float EndMinute = 24 * 60f;
         public const float RealSecondsPerHour = 35f;
-        public const int BottleCost = 1;
-        public const float ManaUpkeepPerMp = 1f;
+        public const int BottleCost = 2;
+        public const float ManaUpkeepPerMp = 3f;
 
         public int Day { get; private set; } = 1;
         public float Minute { get; private set; } = StartMinute;
@@ -44,6 +44,7 @@ namespace GearPotion
             Running = true;
             Economy.Today = new DayLedger();
             Market.RollNews(day);
+            Market.ResetDaily();
             DayStarted?.Invoke(day);
         }
 
