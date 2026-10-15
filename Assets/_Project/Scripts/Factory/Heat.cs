@@ -128,16 +128,57 @@ namespace GearPotion
             var size = new Vector2(Mathf.Abs(Dir.Rotate(def.size, dir).x), Mathf.Abs(Dir.Rotate(def.size, dir).y));
             heatBarHeight = size.y - 0.3f;
             var x = size.x / 2f - 0.13f;
-            heatBarBg = Visuals.Sprite("HeatBg", go.transform, Sprites.White, new Color(0f, 0f, 0f, 0.45f), 12);
+            heatBarBg = Visuals.Sprite("HeatBg", go.transform, Sprites.White, new Color(0f, 0f, 0f, 0.45f), 12, 1f, true);
             heatBarBg.transform.localPosition = new Vector3(x, 0f, 0f);
             heatBarBg.transform.localScale = new Vector3(0.07f, heatBarHeight, 1f);
-            heatBar = Visuals.Sprite("Heat", go.transform, Sprites.White, Color.red, 13);
+            heatBar = Visuals.Sprite("Heat", go.transform, Sprites.White, Color.red, 13, 1f, true);
             heatBar.transform.localPosition = new Vector3(x, -heatBarHeight / 2f, 0f);
-            fireGlow = Visuals.Sprite("Fire", go.transform, Sprites.Glow, new Color(1f, 0.45f, 0.1f, 0f), 15, Mathf.Max(size.x, size.y) * 1.6f);
+            fireGlow = Visuals.Sprite("Fire", go.transform, Sprites.Glow, new Color(1f, 0.45f, 0.1f, 0f), 15, Mathf.Max(size.x, size.y) * 1.6f, true);
             fireGlow.enabled = false;
-            gearIcon = Visuals.Sprite("Overclock", go.transform, Sprites.Gear, new Color(1f, 0.8f, 0.3f), 14, 0.36f);
+            gearIcon = Visuals.Sprite("Overclock", go.transform, Sprites.Gear, new Color(1f, 0.8f, 0.3f), 14, 0.36f, true);
             gearIcon.transform.localPosition = new Vector3(-size.x / 2f + 0.24f, size.y / 2f - 0.24f, 0f);
             gearIcon.enabled = overclocked;
+            machineLight = Lights.Point("MachineLight", go.transform, center, WorkColor, 0f, Mathf.Max(size.x, size.y) * 1.4f + 0.6f);
+        }
+
+        UnityEngine.Rendering.Universal.Light2D machineLight;
+        float lightLevel;
+
+        Color WorkColor => def.kind switch
+        {
+            MachineKind.Cauldron => new Color(1f, 0.55f, 0.9f),
+            MachineKind.Distiller => new Color(0.7f, 0.6f, 1f),
+            MachineKind.Extractor => new Color(0.5f, 1f, 0.6f),
+            MachineKind.Filter => new Color(0.45f, 0.7f, 1f),
+            MachineKind.Bottler => new Color(0.5f, 0.95f, 1f),
+            MachineKind.SlimeVat => new Color(0.55f, 1f, 0.4f),
+            _ => new Color(1f, 0.8f, 0.55f),
+        };
+
+        float WorkGlow => def.kind switch
+        {
+            MachineKind.Cauldron => 1.0f,
+            MachineKind.Distiller or MachineKind.SlimeVat => 0.6f,
+            MachineKind.Crusher => 0.15f,
+            _ => 0.4f,
+        };
+
+        void AnimateLight(float dt)
+        {
+            if (!machineLight) return;
+            float target = working ? WorkGlow : 0f;
+            var color = WorkColor;
+            float h = Mathf.InverseLerp(50f, FireThreshold, heat);
+            if (h > 0f) { color = Color.Lerp(color, new Color(1f, 0.35f, 0.15f), h); target = Mathf.Max(target, 0.9f * h); }
+            if (OnFire)
+            {
+                color = new Color(1f, 0.5f, 0.15f);
+                target = 1.4f + 0.6f * Mathf.PerlinNoise(Time.time * 9f, origin.y * 2.3f);
+            }
+            else if (def.kind == MachineKind.Cauldron && working) target *= 0.85f + 0.15f * Mathf.Sin(Time.time * 5f);
+            lightLevel = Mathf.MoveTowards(lightLevel, target, dt * 3f);
+            machineLight.intensity = lightLevel;
+            machineLight.color = color;
         }
 
         public override void Animate(float dt, ViewMode mode)
@@ -167,6 +208,7 @@ namespace GearPotion
                 fireGlow.color = new Color(1f, 0.45f, 0.1f, OnFire ? 0.55f + 0.35f * flicker : 0.15f * flicker);
             }
             if (gearIcon && overclocked && working) gearIcon.transform.Rotate(0f, 0f, -dt * 240f);
+            AnimateLight(dt);
         }
 
         string HeatInfo()
@@ -187,7 +229,8 @@ namespace GearPotion
         protected override void BuildView()
         {
             base.BuildView();
-            var glow = Visuals.Sprite("Frost", go.transform, Sprites.Glow, new Color(0.5f, 0.9f, 1f, 0.35f), 9, 1.8f);
+            var glow = Visuals.Sprite("Frost", go.transform, Sprites.Glow, new Color(0.5f, 0.9f, 1f, 0.35f), 9, 1.8f, true);
+            Lights.Point("FrostLight", go.transform, center, new Color(0.55f, 0.9f, 1f), 0.6f, 2.2f);
             glow.transform.localPosition = Vector3.zero;
         }
 

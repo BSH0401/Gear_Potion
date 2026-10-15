@@ -31,7 +31,7 @@ namespace GearPotion
         {
             cam = Camera.main;
             ghostRoot = new GameObject("Ghost").transform;
-            ghostArrow = Visuals.Sprite("GhostArrow", ghostRoot, Sprites.Chevron, new Color(1f, 0.9f, 0.4f, 0.9f), 52, 0.45f);
+            ghostArrow = Visuals.Sprite("GhostArrow", ghostRoot, Sprites.Chevron, new Color(1f, 0.9f, 0.4f, 0.9f), 52, 0.45f, true);
         }
 
         public void Select(MachineSO def)
@@ -259,7 +259,7 @@ namespace GearPotion
         void ShowGhost(List<Vector2Int> cells, Color color, int dir, Vector3 arrowPos)
         {
             while (ghostCells.Count < cells.Count)
-                ghostCells.Add(Visuals.Sprite("GhostCell", ghostRoot, Sprites.Rounded, Color.white, 51, 0.95f));
+                ghostCells.Add(Visuals.Sprite("GhostCell", ghostRoot, Sprites.Rounded, Color.white, 51, 0.95f, true));
             for (int i = 0; i < ghostCells.Count; i++)
             {
                 bool on = i < cells.Count;

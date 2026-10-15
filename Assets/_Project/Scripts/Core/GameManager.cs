@@ -9,6 +9,7 @@ namespace GearPotion
 
         [SerializeField] GameDatabase database;
         [SerializeField] Material spriteMaterial;
+        [SerializeField] Material litMaterial;
 
         public static GameDatabase Db;
         public static FactoryGrid Grid;
@@ -30,7 +31,8 @@ namespace GearPotion
         {
             Instance = this;
             Db = database;
-            Visuals.SpriteMaterial = spriteMaterial;
+            Visuals.UnlitMaterial = spriteMaterial;
+            Visuals.SpriteMaterial = litMaterial ? litMaterial : spriteMaterial;
             Application.targetFrameRate = 144;
 
             Grid = new GameObject("FactoryGrid").AddComponent<FactoryGrid>();
@@ -39,6 +41,7 @@ namespace GearPotion
             Customers.Grid = Grid;
             Customers.Clock = Clock;
             new GameObject("Fx").AddComponent<Fx>();
+            new GameObject("Lighting").AddComponent<Lighting>();
             new GameObject("Sfx").AddComponent<Sfx>();
             CameraRig = Camera.main.gameObject.AddComponent<CameraRig>();
             Builder = gameObject.AddComponent<BuildController>();

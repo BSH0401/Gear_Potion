@@ -114,7 +114,7 @@ namespace GearPotion
             rim.transform.localScale = Vector3.one;
             if (HasOutput)
             {
-                var arrow = Visuals.Sprite("Out", go.transform, Sprites.Chevron, new Color(1f, 0.85f, 0.4f, 0.9f), 13, 0.32f);
+                var arrow = Visuals.Sprite("Out", go.transform, Sprites.Chevron, new Color(1f, 0.85f, 0.4f, 0.9f), 13, 0.32f, true);
                 arrow.transform.position = FactoryGrid.CellCenter(outCell) - Dir.V3(dir) * 0.62f;
                 arrow.transform.rotation = Quaternion.Euler(0f, 0f, dir * 90f);
             }
@@ -124,11 +124,11 @@ namespace GearPotion
                     Mathf.Min(size.x, size.y) >= 2f ? 0.3f : 0.2f);
                 label.transform.localPosition = new Vector3(0f, size.y > 1.5f ? 0.15f : 0.05f, 0f);
             }
-            progressBar = Visuals.Sprite("Progress", go.transform, Sprites.White, new Color(1f, 0.9f, 0.45f, 0.9f), 13);
+            progressBar = Visuals.Sprite("Progress", go.transform, Sprites.White, new Color(1f, 0.9f, 0.45f, 0.9f), 13, 1f, true);
             progressBar.transform.localPosition = new Vector3(-(size.x - 0.3f) / 2f, -size.y / 2f + 0.14f, 0f);
             progressBar.transform.localScale = new Vector3(0f, 0.06f, 1f);
             barWidth = size.x - 0.3f;
-            statusOverlay = Visuals.Sprite("Heat", go.transform, Sprites.Rounded, Color.clear, 30);
+            statusOverlay = Visuals.Sprite("Heat", go.transform, Sprites.Rounded, Color.clear, 30, 1f, true);
             statusOverlay.transform.localScale = bodyScale;
             statusOverlay.enabled = false;
         }
@@ -504,6 +504,22 @@ namespace GearPotion
     public class ManaCore : Building
     {
         protected override bool HasOutput => false;
+        UnityEngine.Rendering.Universal.Light2D glow;
+
+        protected override void BuildView()
+        {
+            base.BuildView();
+            glow = Lights.Point("CoreLight", go.transform, center, new Color(0.4f, 0.7f, 1f), 0.8f, 3.2f);
+            var halo = Visuals.Sprite("Halo", go.transform, Sprites.Glow, new Color(0.45f, 0.75f, 1f, 0.35f), 9, 2.6f, true);
+            _ = halo;
+        }
+
+        public override void Animate(float dt, ViewMode mode)
+        {
+            base.Animate(dt, mode);
+            if (glow) glow.intensity = (working ? 0.9f : 0.5f) + 0.25f * Mathf.Sin(Time.time * 2.4f + origin.x);
+        }
+
         public override float ManaSupply => def.mana;
         public override float ManaDemand => 0f;
         public override void Tick(float dt, float power) { working = grid.ManaUse > 0.01f; status = BuildingStatus.Working; }
@@ -730,6 +746,7 @@ namespace GearPotion
                         Sfx.Play(SfxId.Sparkle);
                     }
                     Emit(mix);
+                    Sfx.Play(SfxId.Bubble, 0.35f);
                     break;
                 }
                 case MachineKind.Bottler:

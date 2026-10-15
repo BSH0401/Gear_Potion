@@ -49,6 +49,9 @@ namespace GearPotion
 
         public void Stop() => Running = false;
 
+        /// <summary>개발/테스트용: 같은 날 안에서 시각을 옮긴다.</summary>
+        public void SetMinute(float minute) => Minute = Mathf.Clamp(minute, StartMinute, EndMinute - 1f);
+
         void Update()
         {
             if (!Running) return;

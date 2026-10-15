@@ -14,6 +14,7 @@ namespace GearPotion
     {
         public static bool AutoStart, AutoContinue, AutoNextDay, Demo, OpenResearch, PipeView, AutoContract, OpenContracts, OpenHelp, OpenBlueprints, BlueprintTest;
         public static float TimeScale = 1f;
+        static float startHour = -1f;
         public static int ExtraGold, ExtraRP;
 
         public static void Apply(GameManager gm)
@@ -37,6 +38,7 @@ namespace GearPotion
                     case "-help": OpenHelp = true; break;
                     case "-blueprints": OpenBlueprints = true; break;
                     case "-bptest": BlueprintTest = true; break;
+                    case "-hour": startHour = ParseF(next, -1f); break;
                     case "-unlockall": Research.UnlockAll = true; break;
                     case "-nosave": SaveSystem.Disabled = true; break;
                     case "-demo": Demo = true; AutoStart = true; break;
@@ -50,6 +52,7 @@ namespace GearPotion
             }
             if (Demo) GameClock.DayStarted += BuildDemoOnce;
             if (BlueprintTest) GameClock.DayStarted += RunBlueprintTestOnce;
+            if (startHour >= 0f) GameClock.DayStarted += SetHourOnce;
             if (AutoContract) GameClock.DayStarted += _ => { while (Contracts.Offers.Count > 0 && Contracts.Active.Count < Contracts.MaxActive) Contracts.Accept(Contracts.Offers[0]); };
             if (shots != null || quitAfter > 0f) gm.StartCoroutine(Automation(shots, shotDir, quitAfter));
         }
@@ -79,6 +82,12 @@ namespace GearPotion
             var tall = bp.Clone();
             tall.RotateCCW();
             Debug.Log($"[Dev] blueprint pasted straight={a} rotated180={b} rotated90size={tall.width}x{tall.height}");
+        }
+
+        static void SetHourOnce(int day)
+        {
+            GameClock.DayStarted -= SetHourOnce;
+            GameManager.Instance.Clock.SetMinute(startHour * 60f);
         }
 
         static float ParseF(string s, float fallback) =>

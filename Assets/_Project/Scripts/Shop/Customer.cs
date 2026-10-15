@@ -41,7 +41,7 @@ namespace GearPotion
             body.transform.localPosition = new Vector3(0f, 0.25f, 0f);
             var shadow = Visuals.Sprite("Shadow", transform, Sprites.Circle, new Color(0f, 0f, 0f, 0.3f), 39, 0.4f);
             shadow.transform.localScale = new Vector3(0.45f, 0.16f, 1f);
-            bubble = Visuals.Sprite("Bubble", visual, Sprites.Bubble, new Color(1f, 1f, 1f, 0.92f), 41, 0.7f);
+            bubble = Visuals.Sprite("Bubble", visual, Sprites.Bubble, new Color(1f, 1f, 1f, 0.92f), 41, 0.7f, true);
             bubble.transform.localPosition = new Vector3(0.1f, 0.95f, 0f);
             bubble.transform.localScale = new Vector3(0.95f, 0.5f, 1f);
             bubbleText = Visuals.Label("Want", visual, WantLabel, wanted ? wanted.color * 0.75f + Color.black * 0.25f : new Color(0.2f, 0.2f, 0.25f), 42, 0.2f);

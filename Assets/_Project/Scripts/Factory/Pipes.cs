@@ -12,7 +12,7 @@ namespace GearPotion
         public PipeNetwork network;
         readonly SpriteRenderer[] arms = new SpriteRenderer[4];
         readonly SpriteRenderer[] fluids = new SpriteRenderer[4];
-        SpriteRenderer node, nodeFluid;
+        SpriteRenderer node, nodeFluid, halo;
         ViewMode lastMode = (ViewMode)(-1);
 
         static readonly Color Metal = new(0.55f, 0.6f, 0.7f);
@@ -24,7 +24,9 @@ namespace GearPotion
             go.transform.SetParent(grid.transform, false);
             go.transform.position = center;
             node = Visuals.Sprite("Node", go.transform, Sprites.Circle, Metal, 8, 0.36f);
-            nodeFluid = Visuals.Sprite("NodeFluid", go.transform, Sprites.Circle, Color.clear, 9, 0.2f);
+            nodeFluid = Visuals.Sprite("NodeFluid", go.transform, Sprites.Circle, Color.clear, 9, 0.2f, true);
+            // 마력 배관 발광 (GDD 5개월 차): 원액이 흐르면 원액 색으로 은은하게 빛난다
+            halo = Visuals.Sprite("Halo", go.transform, Sprites.Glow, Color.clear, 7, 1.3f, true);
             for (int d = 0; d < 4; d++)
             {
                 var rot = Quaternion.Euler(0f, 0f, d * 90f);
@@ -32,7 +34,7 @@ namespace GearPotion
                 arms[d].transform.localPosition = Dir.V3(d) * 0.25f;
                 arms[d].transform.localRotation = rot;
                 arms[d].transform.localScale = new Vector3(0.5f, 0.2f, 1f);
-                fluids[d] = Visuals.Sprite("Fluid", go.transform, Sprites.White, Color.clear, 9);
+                fluids[d] = Visuals.Sprite("Fluid", go.transform, Sprites.White, Color.clear, 9, 1f, true);
                 fluids[d].transform.localPosition = Dir.V3(d) * 0.25f;
                 fluids[d].transform.localRotation = rot;
                 fluids[d].transform.localScale = new Vector3(0.5f, 0.08f, 1f);
@@ -81,6 +83,9 @@ namespace GearPotion
             }
             else c = new Color(0.15f, 0.17f, 0.22f, 0.9f);
             nodeFluid.color = c;
+            var hc = network != null && network.Count > 0 ? network.FluidColor : Color.clear;
+            hc.a = network != null && network.Count > 0 ? 0.18f + 0.12f * Mathf.Sin(Time.time * 6f - (origin.x + origin.y) * 0.9f) : 0f;
+            halo.color = hc;
             for (int d = 0; d < 4; d++) fluids[d].color = c;
         }
 

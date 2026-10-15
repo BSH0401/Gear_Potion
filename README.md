@@ -1,7 +1,7 @@
 # 기어 앤 포션 (Gear & Potion: Automate the Atelier)
 
 2D 그리드 기반 **마도 자동화 공방 + 포션 상점 타이쿤** — Unity 6 (6000.3.11f1) · 2D URP · C# 1인 개발 프로젝트.
-Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으로 만든 **수직 슬라이스(v0.5.0)** 입니다.
+Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으로 만든 **수직 슬라이스(v0.6.0)** 입니다.
 
 뒷방(공방)에서는 투입구 → 분쇄기 → 추출기 → 여과기 → 병입기가 벨트와 마력 배관으로 이어져 돌아가고,
 벽 너머 앞가게(매장)에서는 손님이 진열대의 포션을 사 갑니다.
@@ -53,7 +53,8 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 | 3.1 오버클럭 태엽 · 과열/화재 · 얼음 정령석/냉각수 배관 | ✅ `Heat.cs` — v0.3.0 |
 | 3.3 4대 세력 대량 납품 계약 · 세력 평판/혜택 | ✅ `Contracts.cs` — v0.4.0 (비밀 지하실은 의심 감소 혜택으로 대체) |
 | 5.1 청사진 복사/붙여넣기 (회전, 프리셋 저장) | ✅ `Blueprints.cs` — v0.5.0 |
-| 2D URP 발광 조명 · 실제 아트/사운드 | ⏳ 폴리싱 단계 |
+| 2D URP 조명: 낮밤 전역광 · 매장 램프 · 가마 불빛 · 마력 배관 발광 · 화재 불빛 | ✅ `Lighting.cs` — v0.6.0 |
+| 실제 아트/사운드 교체 | ⏳ 폴리싱 단계 (현재 SDF 스프라이트·합성음) |
 
 ## 배관 레이어 (v0.2.0)
 
@@ -95,6 +96,15 @@ Google Drive의 「[상세 기획서] 기어 앤 포션」 GDD v1.0을 바탕으
 - 설치 가능한 칸의 설비만 골라 비용을 한 번에 지불하고, 막힌 칸·미해금 설비는 건너뜁니다(미리보기에서 빨간색).
 - 청사진은 최대 8개, 세이브와 별개 파일(`gearpotion_blueprints.json`)이라 모든 공방에서 공용입니다.
 
+## 2D 조명 (v0.6.0)
+
+- 모든 바닥·설비·손님 스프라이트가 URP 2D 조명(Sprite-Lit)을 받습니다. 표시용 요소(출력 화살표·진행/열 게이지·고스트·말풍선·발광)는 조명과 무관하게 빛납니다(Sprite-Unlit).
+- **전역광**이 하루 시간에 따라 바뀝니다: 06시 푸른 새벽 → 한낮 → 18시 노을 → 22시 이후 어두운 심야. 배관 뷰·히트맵에서는 항상 밝게.
+- 해가 지면 매장 벽을 따라 **램프**가 켜져 손님과 진열대를 비춥니다.
+- 설비 **점광원**: 가동 중인 설비 고유색(합성 가마는 일렁이는 자홍빛), 열 50 이상이면 붉게, 화재 시 강하게 깜빡임. 마나 코어는 푸르게 맥동, 얼음 정령석은 하늘색.
+- **마력 배관 발광**: 원액이 흐르는 배관은 원액 색으로 은은하게 빛납니다.
+- 합성 가마가 원액을 섞을 때 보글거리는 소리가 납니다.
+
 ## 콘텐츠
 
 - 원재료 7종: 이슬 맺힌 약초, 화염 뿌리, 바람 민들레 홀씨, 구리빛 마광석, 동굴 발광 버섯, 얼음 정령의 파편, 용암 도마뱀의 독샘
@@ -114,4 +124,4 @@ Assets/_Project/
   Scripts/Dev/   DevCommandLine(자동 테스트 플래그), DemoLayout
 ```
 
-개발용 실행 플래그: `-bptest -blueprints -autocontract -contracts -autostart -continue -demo -timescale N -autonext -unlockall -gold N -rp N -nosave -shots 3,30 -shotdir 경로 -quitafter 초 -research -pipeview`
+개발용 실행 플래그: `-hour 20 -bptest -blueprints -autocontract -contracts -autostart -continue -demo -timescale N -autonext -unlockall -gold N -rp N -nosave -shots 3,30 -shotdir 경로 -quitafter 초 -research -pipeview`

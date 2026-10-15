@@ -178,7 +178,7 @@ namespace GearPotion
         {
             cam = Camera.main;
             ghostRoot = new GameObject("BlueprintGhost").transform;
-            rectGhost = Visuals.Sprite("Rect", ghostRoot, Sprites.White, new Color(0.4f, 0.85f, 1f, 0.18f), 50);
+            rectGhost = Visuals.Sprite("Rect", ghostRoot, Sprites.White, new Color(0.4f, 0.85f, 1f, 0.18f), 50, 1f, true);
             rectGhost.enabled = false;
         }
 
@@ -383,7 +383,7 @@ namespace GearPotion
 
         void Ghost(Vector2Int c, Color color, float scale)
         {
-            if (ghostIndex >= ghosts.Count) ghosts.Add(Visuals.Sprite("G", ghostRoot, Sprites.Rounded, Color.white, 51));
+            if (ghostIndex >= ghosts.Count) ghosts.Add(Visuals.Sprite("G", ghostRoot, Sprites.Rounded, Color.white, 51, 1f, true));
             var g = ghosts[ghostIndex++];
             g.enabled = true;
             g.transform.position = FactoryGrid.CellCenter(c);

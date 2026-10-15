@@ -14,7 +14,7 @@ namespace GearPotion.EditorTools
         const string Root = "Assets/_Project";
         const string ScenePath = Root + "/Scenes/Atelier.unity";
         const string BuildPath = "Builds/Windows/GearPotion.exe";
-        public const string Version = "0.5.0";
+        public const string Version = "0.6.0";
 
         [MenuItem("Gear & Potion/Setup Project")]
         public static void Setup()
@@ -24,7 +24,7 @@ namespace GearPotion.EditorTools
                 Directory.CreateDirectory(Path.Combine(Root, dir));
             AssetDatabase.Refresh();
 
-            var material = CreateMaterial();
+            var material = CreateMaterial("M_SpriteUnlit", "Universal Render Pipeline/2D/Sprite-Unlit-Default");
             var db = DefaultContent.Upsert<GameDatabase>($"{Root}/Data/GameDatabase.asset", _ => { });
             db.ingredients = DefaultContent.Ingredients(Root);
             db.machines = DefaultContent.Machines(Root);
@@ -48,6 +48,7 @@ namespace GearPotion.EditorTools
             var so = new SerializedObject(gm);
             so.FindProperty("database").objectReferenceValue = db;
             so.FindProperty("spriteMaterial").objectReferenceValue = material;
+            so.FindProperty("litMaterial").objectReferenceValue = CreateMaterial("M_SpriteLit", "Universal Render Pipeline/2D/Sprite-Lit-Default");
             so.ApplyModifiedPropertiesWithoutUndo();
 
             EditorSceneManager.SaveScene(scene, ScenePath);
@@ -80,13 +81,13 @@ namespace GearPotion.EditorTools
             BuildWindows();
         }
 
-        static Material CreateMaterial()
+        static Material CreateMaterial(string name, string shaderName)
         {
-            string path = $"{Root}/Materials/M_SpriteUnlit.mat";
+            string path = $"{Root}/Materials/{name}.mat";
             var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
             if (mat) return mat;
-            var shader = Shader.Find("Universal Render Pipeline/2D/Sprite-Unlit-Default") ?? Shader.Find("Sprites/Default");
-            mat = new Material(shader) { name = "M_SpriteUnlit" };
+            var shader = Shader.Find(shaderName) ?? Shader.Find("Sprites/Default");
+            mat = new Material(shader) { name = name };
             AssetDatabase.CreateAsset(mat, path);
             return mat;
         }

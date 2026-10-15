@@ -156,13 +156,16 @@ namespace GearPotion
 
     public static class Visuals
     {
+        /// <summary>2D 조명을 받는 기본 머티리얼 (Sprite-Lit).</summary>
         public static Material SpriteMaterial;
+        /// <summary>조명과 무관하게 스스로 빛나는 표시용 (Sprite-Unlit): 발광·고스트·UI성 표시.</summary>
+        public static Material UnlitMaterial;
         static Font worldFont;
 
         public static Font Font => worldFont ? worldFont : worldFont = Font.CreateDynamicFontFromOSFont(
             new[] { "Malgun Gothic", "Segoe UI", "Arial" }, 48);
 
-        public static SpriteRenderer Sprite(string name, Transform parent, Sprite sprite, Color color, int order, float scale = 1f)
+        public static SpriteRenderer Sprite(string name, Transform parent, Sprite sprite, Color color, int order, float scale = 1f, bool emissive = false)
         {
             var go = new GameObject(name);
             go.transform.SetParent(parent, false);
@@ -171,7 +174,8 @@ namespace GearPotion
             sr.sprite = sprite;
             sr.color = color;
             sr.sortingOrder = order;
-            if (SpriteMaterial) sr.sharedMaterial = SpriteMaterial;
+            var mat = emissive && UnlitMaterial ? UnlitMaterial : SpriteMaterial;
+            if (mat) sr.sharedMaterial = mat;
             return sr;
         }
 

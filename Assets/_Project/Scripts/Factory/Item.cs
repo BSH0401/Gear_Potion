@@ -125,7 +125,7 @@ namespace GearPotion
                 go.transform.SetParent(root, false);
                 v = go.AddComponent<ItemView>();
                 v.body = Visuals.Sprite("Body", go.transform, Sprites.Circle, Color.white, 20, 0.36f);
-                v.gradeDot = Visuals.Sprite("Grade", go.transform, Sprites.Circle, Color.white, 21, 0.13f);
+                v.gradeDot = Visuals.Sprite("Grade", go.transform, Sprites.Circle, Color.white, 21, 0.13f, true);
                 v.gradeDot.transform.localPosition = new Vector3(0.14f, 0.14f, 0f);
             }
             v.gameObject.SetActive(true);
