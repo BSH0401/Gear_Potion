@@ -12,7 +12,7 @@ namespace GearPotion
     /// </summary>
     public static class DevCommandLine
     {
-        public static bool AutoStart, AutoContinue, AutoNextDay, Demo, OpenResearch, PipeView;
+        public static bool AutoStart, AutoContinue, AutoNextDay, Demo, OpenResearch, PipeView, AutoContract, OpenContracts, OpenHelp;
         public static float TimeScale = 1f;
         public static int ExtraGold, ExtraRP;
 
@@ -32,6 +32,9 @@ namespace GearPotion
                     case "-continue": AutoContinue = true; break;
                     case "-research": OpenResearch = true; break;
                     case "-pipeview": PipeView = true; break;
+                    case "-autocontract": AutoContract = true; break;
+                    case "-contracts": OpenContracts = true; break;
+                    case "-help": OpenHelp = true; break;
                     case "-unlockall": Research.UnlockAll = true; break;
                     case "-nosave": SaveSystem.Disabled = true; break;
                     case "-demo": Demo = true; AutoStart = true; break;
@@ -44,6 +47,7 @@ namespace GearPotion
                 }
             }
             if (Demo) GameClock.DayStarted += BuildDemoOnce;
+            if (AutoContract) GameClock.DayStarted += _ => { while (Contracts.Offers.Count > 0 && Contracts.Active.Count < Contracts.MaxActive) Contracts.Accept(Contracts.Offers[0]); };
             if (shots != null || quitAfter > 0f) gm.StartCoroutine(Automation(shots, shotDir, quitAfter));
         }
 
@@ -73,13 +77,13 @@ namespace GearPotion
                     ScreenCapture.CaptureScreenshot(path);
                     var gm = GameManager.Instance;
                     Debug.Log($"[Dev] screenshot {path} day={gm.Clock.Day} time={gm.Clock.TimeText} gold={Economy.Gold} sold={Discoveries.TotalSold} " +
-                              $"known={string.Join("/", Discoveries.Known)} buildings={GameManager.Grid.buildings.Count} items={ItemViews.ActiveCount} rating={Market.Rating:0.00} fires={Processor.FiresStarted}");
+                              $"known={string.Join("/", Discoveries.Known)} buildings={GameManager.Grid.buildings.Count} items={ItemViews.ActiveCount} rating={Market.Rating:0.00} fires={Processor.FiresStarted} contracts={Contracts.Completed}/{Contracts.Active.Count} offers={Contracts.Offers.Count}");
                 }
             }
             if (quitAfter > 0f)
             {
                 while (Time.realtimeSinceStartup - start < quitAfter) yield return null;
-                Debug.Log($"[Dev] quit day={GameManager.Instance.Clock.Day} gold={Economy.Gold} sold={Discoveries.TotalSold} revenue={Discoveries.TotalRevenue} best={Discoveries.BestGrade}");
+                Debug.Log($"[Dev] quit contracts={Contracts.Completed} ranks={string.Join(",", Contracts.Rank)} day={GameManager.Instance.Clock.Day} gold={Economy.Gold} sold={Discoveries.TotalSold} revenue={Discoveries.TotalRevenue} best={Discoveries.BestGrade}");
                 Application.Quit();
             }
         }

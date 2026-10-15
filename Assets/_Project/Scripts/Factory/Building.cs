@@ -467,11 +467,19 @@ namespace GearPotion
     public class ExportCrate : Building
     {
         protected override bool HasOutput => false;
-        int sold, revenue;
+        int sold, revenue, delivered;
 
         public override bool TryInsert(Item it, Vector2Int cell, int travelDir)
         {
             if (it.kind != ItemKind.Potion && it.kind != ItemKind.Crystal) return false;
+            // 진행 중인 세력 계약에 맞는 포션이면 계약 납품으로 (보상은 완료 시 일괄 지급)
+            if (Contracts.TryDeliver(it, center))
+            {
+                it.Hide();
+                delivered++;
+                status = BuildingStatus.Working;
+                return true;
+            }
             int value = it.kind == ItemKind.Crystal ? it.BaseValue : Mathf.Max(1, Mathf.RoundToInt(Market.PotionPrice(it) * 0.7f));
             Economy.Earn(value, LedgerEntry.Bulk);
             Fx.Float(center, $"+{value}G", new Color(1f, 0.85f, 0.3f));
@@ -483,7 +491,13 @@ namespace GearPotion
         }
 
         public override void Tick(float dt, float power) { }
-        public override string Info() => base.Info() + $"\n포션(도매 70%)·마력 결정 납품\n누적 {sold}개 / {revenue}G";
+        public override string Info()
+        {
+            var s = base.Info() + "\n진행 중인 세력 계약에 맞는 포션은 계약으로, 나머지는 도매(70%)로 판매";
+            s += $"\n계약 납품 {delivered}개 · 도매 {sold}개 / {revenue}G";
+            foreach (var c in Contracts.Active) s += $"\n  <color=#ffd27a>[{Contracts.FactionNames[c.faction]}]</color> {c.Short} {c.delivered}/{c.quantity}";
+            return s;
+        }
     }
 
     /// <summary>마나 코어: 마력 전력망에 MP를 공급한다.</summary>

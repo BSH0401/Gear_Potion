@@ -163,7 +163,7 @@ namespace GearPotion
             origin -= new Vector2Int(shift.x / 2, shift.y / 2);
             Building.Footprint(Selected, origin, Rotation, footprint, out outCell, out _);
             bool ok = grid.CanPlace(Selected, origin, Rotation, out var reason);
-            bool afford = Economy.CanAfford(Selected.cost);
+            bool afford = Economy.CanAfford(Contracts.BuildCost(Selected));
             ShowGhost(footprint, ok && afford ? new Color(0.4f, 1f, 0.5f, 0.45f) : new Color(1f, 0.3f, 0.25f, 0.45f),
                 Selected.kind == MachineKind.Pipe ? -1 : Rotation,
                 Selected.kind == MachineKind.Belt ? FactoryGrid.CellCenter(origin) : FactoryGrid.CellCenter(outCell) - Dir.V3(Rotation) * 0.6f);
@@ -216,9 +216,9 @@ namespace GearPotion
         {
             var grid = GameManager.Grid;
             if (!grid.CanPlace(Selected, origin, Rotation, out _)) return null;
-            if (!Economy.TrySpend(Selected.cost, LedgerEntry.Construction))
+            if (!Economy.TrySpend(Contracts.BuildCost(Selected), LedgerEntry.Construction))
             {
-                Toasts.Show($"골드가 부족합니다 ({Selected.cost}G)", new Color(1f, 0.5f, 0.4f));
+                Toasts.Show($"골드가 부족합니다 ({Contracts.BuildCost(Selected)}G)", new Color(1f, 0.5f, 0.4f));
                 Sfx.Play(SfxId.Error);
                 return null;
             }
@@ -243,7 +243,7 @@ namespace GearPotion
                 removeDragging = false;
                 return;
             }
-            int refund = Mathf.RoundToInt(b.def.cost * RefundRate);
+            int refund = Mathf.RoundToInt(Contracts.BuildCost(b.def) * RefundRate);
             if (b is Processor { overclocked: true })
             {
                 var gear = GameManager.Db.Machine(MachineKind.Overclock);

@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace GearPotion
 {
-    public enum LedgerEntry { Retail, Bulk, BlackMarket, Ingredients, Bottles, Disposal, Construction, Refund, ManaUpkeep, Fine }
+    public enum LedgerEntry { Retail, Bulk, BlackMarket, Ingredients, Bottles, Disposal, Construction, Refund, ManaUpkeep, Fine, Contract }
 
     /// <summary>하루 손익계산서 (GDD 2.2 심야 정산).</summary>
     [Serializable]
     public class DayLedger
     {
         public int[] amounts = new int[Enum.GetValues(typeof(LedgerEntry)).Length];
-        public int customers, served, potionsSold, ratingSum, ratingCount, rpEarned;
+        public int customers, served, potionsSold, ratingSum, ratingCount, rpEarned, contractsFailed;
 
         public int this[LedgerEntry e] { get => amounts[(int)e]; set => amounts[(int)e] = value; }
-        public int Income => this[LedgerEntry.Retail] + this[LedgerEntry.Bulk] + this[LedgerEntry.BlackMarket] + this[LedgerEntry.Refund];
+        public int Income => this[LedgerEntry.Retail] + this[LedgerEntry.Bulk] + this[LedgerEntry.BlackMarket] + this[LedgerEntry.Refund] + this[LedgerEntry.Contract];
         public int Expense => this[LedgerEntry.Ingredients] + this[LedgerEntry.Bottles] + this[LedgerEntry.Disposal] +
                               this[LedgerEntry.Construction] + this[LedgerEntry.ManaUpkeep] + this[LedgerEntry.Fine];
         public int Net => Income - Expense;

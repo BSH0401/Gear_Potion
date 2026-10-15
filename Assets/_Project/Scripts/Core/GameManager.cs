@@ -44,9 +44,14 @@ namespace GearPotion
             Builder = gameObject.AddComponent<BuildController>();
             Hud = new GameObject("HUD").AddComponent<HUD>();
             GameClock.DayEnded += OnDayEnded;
+            GameClock.DayStarted += Contracts.OnDayStart;
         }
 
-        void OnDestroy() => GameClock.DayEnded -= OnDayEnded;
+        void OnDestroy()
+        {
+            GameClock.DayEnded -= OnDayEnded;
+            GameClock.DayStarted -= Contracts.OnDayStart;
+        }
 
         void Start()
         {
@@ -58,6 +63,8 @@ namespace GearPotion
             else Hud.ShowTitle();
             if (DevCommandLine.OpenResearch && InGame) Hud.ShowResearch();
             if (DevCommandLine.PipeView) Grid.View = ViewMode.Pipes;
+            if (DevCommandLine.OpenContracts && InGame) Hud.ShowContracts();
+            if (DevCommandLine.OpenHelp && InGame) Hud.ShowHelp();
         }
 
         // ───────────── 게임 흐름 ─────────────
@@ -70,6 +77,7 @@ namespace GearPotion
             Research.Reset(null);
             Discoveries.Reset(null, 0, 0, -1, 0);
             Market.ResetReputation(3f, 0f);
+            Contracts.Reset(null, null, null);
             Economy.Reset(StartGold + DevCommandLine.ExtraGold, DevCommandLine.ExtraRP);
             StarterLayout.Build(Grid);
             BeginSession(1);
@@ -102,6 +110,7 @@ namespace GearPotion
         void OnDayEnded(int day)
         {
             Customers.SendEveryoneHome();
+            Contracts.OnDayEnd(day);
             PushModal();
             Hud.ShowSettlement(day, Economy.Today, () =>
             {

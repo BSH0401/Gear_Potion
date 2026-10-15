@@ -82,7 +82,7 @@ namespace GearPotion.EditorTools
             Add("MAC_CRATE", "원재료 투입구", "투입", MachineKind.Crate, BuildCategory.Logistics, BuildZone.Factory, one, 1, 20, 0, 2f, "#8a6a3a",
                 "선택한 원재료를 매입가를 지불하고 2초마다 배출. 클릭해 재료 변경");
             Add("MAC_EXPORT", "납품 상자", "납품", MachineKind.Export, BuildCategory.Logistics, BuildZone.Factory, one, 1, 40, 0, 0, "#7a6a2a",
-                "포션을 상인 연합에 도매가(70%)로, 마력 결정을 35G에 판매");
+                "진행 중인 세력 계약에 맞는 포션은 계약 납품으로, 나머지 포션은 도매가(70%)로, 마력 결정은 35G에 판매");
             Add("MAC_TRASH", "폐기통", "폐기", MachineKind.Trash, BuildCategory.Logistics, BuildZone.Factory, one, 1, 10, 0, 0, "#3a3a3a",
                 "무엇이든 폐기. 슬러지는 1개당 환경 부담금 5G");
             // 가공·연성

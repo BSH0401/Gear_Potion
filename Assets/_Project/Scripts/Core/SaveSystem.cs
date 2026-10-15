@@ -23,6 +23,9 @@ namespace GearPotion
         public List<string> unlocked = new();
         public List<string> discovered = new();
         public List<BuildingSave> buildings = new();
+        public List<Contract> contracts = new();
+        public int[] factionRank = new int[4];
+        public bool[] factionPerks = new bool[4];
     }
 
     [Serializable]
@@ -55,6 +58,9 @@ namespace GearPotion
                 brewed = Discoveries.Brewed,
                 unlocked = new List<string>(Research.Unlocked),
                 discovered = new List<string>(Discoveries.Known),
+                contracts = new List<Contract>(Contracts.Active),
+                factionRank = (int[])Contracts.Rank.Clone(),
+                factionPerks = (bool[])Contracts.Perks.Clone(),
             };
             foreach (var b in grid.buildings)
                 d.buildings.Add(new BuildingSave { id = b.def.id, x = b.origin.x, y = b.origin.y, dir = b.dir, config = b.config, oc = b is Processor { overclocked: true } ? 1 : 0 });
@@ -95,6 +101,7 @@ namespace GearPotion
             Market.ResetReputation(d.rating, d.suspicion);
             Research.Reset(d.unlocked);
             Discoveries.Reset(d.discovered, d.totalSold, d.totalRevenue, d.bestGrade, d.brewed);
+            Contracts.Reset(d.contracts, d.factionRank, d.factionPerks);
             foreach (var b in d.buildings)
             {
                 var def = GameManager.Db.Machine(b.id);

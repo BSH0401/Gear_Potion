@@ -20,7 +20,7 @@ namespace GearPotion
         public static int IngredientPrice(IngredientSO ing)
         {
             float m = ing == ShiftedIngredient ? IngredientShift : 1f;
-            return Mathf.Max(1, Mathf.RoundToInt(ing.cost * m));
+            return Mathf.Max(1, Mathf.RoundToInt(ing.cost * m * Contracts.IngredientMultiplier(ing)));
         }
 
         public static float TrendMultiplier(PotionSO p) => p != null && p == TrendPotion ? TrendBonus : 1f;

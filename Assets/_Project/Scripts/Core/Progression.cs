@@ -25,6 +25,12 @@ namespace GearPotion
             return true;
         }
 
+        /// <summary>연구 없이 해금 (세력 계약 혜택).</summary>
+        public static void Grant(string id)
+        {
+            if (Unlocked.Add(id)) Changed?.Invoke();
+        }
+
         public static void Reset(IEnumerable<string> ids)
         {
             Unlocked.Clear();
@@ -90,6 +96,7 @@ namespace GearPotion
                 return false;
             }),
             new("마도 합성 가마로 '고순도 마나 엘릭서' 만들기", () => Known("POT_MANA")),
+            new("세력 납품 계약 1건 완료하기 (납품 상자)", () => System.Array.Exists(Contracts.Perks, p => p)),
             new("누적 매출 5,000G 달성", () => Discoveries.TotalRevenue >= 5000),
             new("'폭풍 질주 포션' 만들기", () => Known("POT_STORM")),
             new("S등급 포션 만들기", () => Discoveries.BestGrade >= (int)Grade.S),

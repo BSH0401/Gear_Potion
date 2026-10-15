@@ -27,8 +27,9 @@ namespace GearPotion
             var old = grid.At(new Vector2Int(8, 4));
             if (old != null) grid.Remove(old);
             Place(grid, "MAC_SPLITTER", 8, 4, 3);
-            Place(grid, "MAC_BELT", 9, 4, 3);
-            Place(grid, "MAC_SHELF", 9, 3, 0, 1);
+            // 분배기 왼쪽 출력은 납품 상자로 (세력 계약 / 도매)
+            Place(grid, "MAC_BELT", 9, 4, 0);
+            Place(grid, "MAC_EXPORT", 10, 4, 0);
 
             // ② 마나 엘릭서 라인 (배관 레이어)
             Place(grid, "MAC_CRATE", 14, 9, 0, Ing(db, "MAT_05"));

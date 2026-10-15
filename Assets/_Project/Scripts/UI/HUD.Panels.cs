@@ -58,6 +58,7 @@ namespace GearPotion
         {
             modalOpen = true;
             CloseResearch();
+            CloseContracts();
             var o = Overlay("Settlement");
             settlementPanel = o.gameObject;
             var p = UIFactory.Rect("Panel", o, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(760f, 780f));
@@ -77,6 +78,7 @@ namespace GearPotion
             void Head(string name) { names.Append($"<b>{name}</b>\n"); values.Append('\n'); }
             Head("수입");
             Row("  매장 판매", l[LedgerEntry.Retail], false);
+            Row("  세력 계약 보상", l[LedgerEntry.Contract], false);
             Row("  도매 납품", l[LedgerEntry.Bulk], false);
             Row("  암시장 거래", l[LedgerEntry.BlackMarket], false);
             Row("  철거 환불", l[LedgerEntry.Refund], false);
@@ -98,6 +100,7 @@ namespace GearPotion
             sb.Append($"방문 손님 {l.customers}명 · 결제 {l.served}명 · 판매 포션 {l.potionsSold}병\n");
             sb.Append(l.ratingCount > 0 ? $"오늘 평균 별점 ★ {l.AverageRating:0.0} → 내일 방문객 x{Market.TrafficMultiplier:0.00}\n" : "오늘은 별점이 없습니다\n");
             sb.Append($"획득 연구 포인트 <color=#a8f0c0>+{l.rpEarned} RP</color> (보유 {Economy.ResearchPoints})\n");
+            if (l.contractsFailed > 0) sb.Append($"<color=#ff9a8a>기한을 넘긴 계약 {l.contractsFailed}건 — 세력 평판 하락</color>\n");
             if (Market.Suspicion > 0.5f) sb.Append($"<color=#d080ff>왕실 경비대 의심 수치 {Market.Suspicion:0}/100</color>\n");
             sb.Append($"보유 골드 <color=#ffd27a><b>{Economy.Gold:N0} G</b></color>");
             UIFactory.Label(UIFactory.Rect("Body", p, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -120f - nameText.preferredHeight), new Vector2(640f, 220f)),
@@ -219,7 +222,7 @@ namespace GearPotion
                 "· 하단 독에서 설비 선택 → 좌클릭 배치 (벨트는 드래그로 연속 배치, 끌어간 방향으로 자동 회전)\n" +
                 "· R 회전 (Shift+R 역회전) · 우클릭 철거/선택 취소 (75% 환불) · X 철거 모드 · Q 스포이트\n" +
                 "· 설비 클릭: 투입구 재료 / 진열대 가격 배율 / 분류기 조건 / 합성 가마 혼합 모드 변경\n" +
-                "· Space 일시정지 · 1~4 독 탭 · T 연구 · Tab 뷰 전환(일반→배관→히트맵) · WASD/휠/휠버튼 드래그 카메라\n\n" +
+                "· Space 일시정지 · 1~4 독 탭 · T 연구 · C 계약 · Tab 뷰 전환(일반→배관→히트맵) · WASD/휠/휠버튼 드래그 카메라\n\n" +
                 "<b><color=#ffd27a>물류 · 배관</color></b>\n" +
                 "· 고체(재료·분말·포션·슬러지)는 벨트로, 액체 원액은 <color=#8fd0ff>마력 배관</color>으로만 이동합니다. 설비는 노란 꺾쇠(▶) 쪽으로 배출합니다.\n" +
                 "· 원액 설비의 출력 칸에 배관을 놓으면 이어진 배관 전체(네트워크)를 타고 닿아 있는 여과기·증류탑·가마·병입기로 공급됩니다.\n" +
@@ -235,12 +238,15 @@ namespace GearPotion
                 "· 순도 = 100 - 불순물. C(40↓) x0.6 · B x1.0 · A(70+) x1.45 · S(90+) x2.1 · SSS(99+) x3.5\n" +
                 "· 하급 치유(수10+지5) · 화염 활력제(화20) · 마나 엘릭서(수25+에테르15) · 폭풍 질주(풍30+수15)\n" +
                 "  드래곤 브레스(화60+에테르30) · 액상 현자의 돌(전 원소 50 + 불순물 0%)\n\n" +
+                "<b><color=#ffd27a>세력 계약 (C)</color></b>\n" +
+                "· Day 2부터 매일 새벽 길드·학회·상인 연합·암시장 의뢰 도착, 2건까지 수락. 납품 상자로 보내 기한 내 채우면 보상 + 평판.\n" +
+                "· 세력별 첫 성공 시 영구 혜택(재료 해금·할인·설계도·의심 감소). 기한을 넘기면 평판 -1.\n\n" +
                 "<b><color=#ffd27a>하루</color></b>\n" +
                 "· 06~09 새벽(시계 0.5배) 정비 → 09 오픈 → 17 피크(정예 모험가·학회 감정사·암시장 브로커) → 22 마감 → 24 정산\n" +
                 "· 마력(MP) 소비가 공급을 넘으면 모든 설비가 느려집니다. 마나 코어를 추가하세요. (하루 유지비 1G/MP)\n" +
                 "· 별점이 높을수록 다음 날 손님이 늘어납니다. 암시장 거래는 3배 가격이지만 의심 수치 100이면 검문 벌금!";
             UIFactory.Label(UIFactory.Rect("Body", p, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -90f), new Vector2(1200f, 700f)),
-                text, 20, UIFactory.TextColor, TextAnchor.UpperLeft, true);
+                text, 18, UIFactory.TextColor, TextAnchor.UpperLeft, true);
             UIFactory.Button(p, "닫기", new Vector2(0.5f, 0f), new Vector2(0f, 50f), new Vector2(260f, 60f), CloseHelp, 26);
         }
 
@@ -271,6 +277,9 @@ namespace GearPotion
             toastRoot = UIFactory.Rect("Toasts", parent, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -85f), new Vector2(1400f, 300f));
             Toasts.Sink = (s, c, d) =>
             {
+                // 같은 알림이 이미 떠 있으면 새로 쌓지 않고 시간만 연장
+                foreach (var existing in toasts)
+                    if (existing.text.text == s) { existing.age = 0f; existing.life = d; return; }
                 var rt = UIFactory.Rect("Toast", toastRoot, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), Vector2.zero, new Vector2(1400f, 40f));
                 var t = UIFactory.Label(rt, s, 26, c);
                 toasts.Insert(0, new Toast { text = t, life = d });

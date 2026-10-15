@@ -172,7 +172,7 @@ namespace GearPotion
             Discoveries.TotalRevenue += total;
             Economy.Today.potionsSold += basket.Count;
             Economy.Today.served++;
-            if (IsBroker) Market.Suspicion = Mathf.Min(120f, Market.Suspicion + profile.suspicionPerVisit);
+            if (IsBroker) Market.Suspicion = Mathf.Min(120f, Market.Suspicion + profile.suspicionPerVisit * Contracts.SuspicionMultiplier);
             Fx.Float(transform.position + Vector3.up * 0.5f, $"+{total}G", new Color(1f, 0.85f, 0.25f));
             Sfx.Play(SfxId.Coin);
 
