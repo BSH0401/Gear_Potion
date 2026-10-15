@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_COOLER
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_COOLER
+  displayName: "\uC5BC\uC74C \uC815\uB839\uC11D"
+  shortName: "\uC5BC\uC74C\uC11D"
+  kind: 17
+  category: 2
+  zone: 0
+  size: {x: 1, y: 1}
+  tier: 2
+  cost: 60
+  mana: 0
+  processTime: 0
+  param: 0
+  priceBonus: 1
+  color: {r: 0.43529412, g: 0.78431374, b: 0.9098039, a: 1}
+  description: "\uB9DE\uB2FF\uC740 \uAC00\uACF5 \uC124\uBE44\uC758 \uC5F4\uC744 \uCD08\uB2F9
+    6 \uC2DD\uD798. \uC624\uBC84\uD074\uB7ED\xB7\uD654\uC5FC \uC7AC\uB8CC \uB77C\uC778\uC758
+    \uACFC\uC5F4\uC744 \uB9C9\uB294\uB2E4"
+  unlockedByDefault: 0
+  researchCost: 60
+  removable: 1

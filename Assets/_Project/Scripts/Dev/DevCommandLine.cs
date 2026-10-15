@@ -73,7 +73,7 @@ namespace GearPotion
                     ScreenCapture.CaptureScreenshot(path);
                     var gm = GameManager.Instance;
                     Debug.Log($"[Dev] screenshot {path} day={gm.Clock.Day} time={gm.Clock.TimeText} gold={Economy.Gold} sold={Discoveries.TotalSold} " +
-                              $"known={string.Join("/", Discoveries.Known)} buildings={GameManager.Grid.buildings.Count} items={ItemViews.ActiveCount} rating={Market.Rating:0.00}");
+                              $"known={string.Join("/", Discoveries.Known)} buildings={GameManager.Grid.buildings.Count} items={ItemViews.ActiveCount} rating={Market.Rating:0.00} fires={Processor.FiresStarted}");
                 }
             }
             if (quitAfter > 0f)

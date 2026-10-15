@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GearPotion
 {
-    public enum SfxId { Click, Place, Remove, Coin, Bell, Sparkle, Error, DayEnd, Bubble }
+    public enum SfxId { Click, Place, Remove, Coin, Bell, Sparkle, Error, DayEnd, Bubble, Fire }
 
     /// <summary>
     /// 합성(신시사이즈) 플레이스홀더 효과음. 오디오 에셋 없이 동전·종·보글 소리를 만든다.
@@ -47,7 +47,7 @@ namespace GearPotion
             float len = id switch
             {
                 SfxId.Bell => 0.9f, SfxId.DayEnd => 1.2f, SfxId.Sparkle => 0.5f, SfxId.Coin => 0.35f,
-                SfxId.Bubble => 0.25f, _ => 0.15f,
+                SfxId.Bubble => 0.25f, SfxId.Fire => 0.7f, _ => 0.15f,
             };
             int n = (int)(Rate * len);
             var d = new float[n];
@@ -94,6 +94,10 @@ namespace GearPotion
                         v = Mathf.Sin(2 * Mathf.PI * notes[k] * t) * Mathf.Exp(-(t - k * 0.18f) * 5f) * 0.3f;
                         break;
                     }
+                    case SfxId.Fire:
+                        v = (float)(rng.NextDouble() * 2 - 1) * Mathf.Exp(-t * 4f) * (0.5f + 0.5f * Mathf.Sin(2 * Mathf.PI * 9f * t)) * 0.45f +
+                            Mathf.Sin(2 * Mathf.PI * Mathf.Lerp(120f, 50f, t / len) * t) * Mathf.Exp(-t * 5f) * 0.4f;
+                        break;
                     case SfxId.Bubble:
                         v = Mathf.Sin(2 * Mathf.PI * Mathf.Lerp(300f, 900f, t / len) * t) * Mathf.Sin(Mathf.PI * t / len) * 0.35f;
                         break;

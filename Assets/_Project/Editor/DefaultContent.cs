@@ -100,6 +100,10 @@ namespace GearPotion.EditorTools
                 "인접 배관의 원액을 유리병(1G)에 담아 포션으로 확정. 원소 조건으로 종류가 결정됨");
             Add("MAC_SLIME", "연금 슬라임 배양조", "슬라임", MachineKind.SlimeVat, BuildCategory.Processing, BuildZone.Factory, new Vector2Int(2, 2), 3, 450, 10, 8f, "#4a7a3a",
                 "슬러지 2개를 먹여 마력 결정(35G) 1개 생산", false, 250);
+            Add("MAC_COOLER", "얼음 정령석", "얼음석", MachineKind.Cooler, BuildCategory.Processing, BuildZone.Factory, one, 2, 60, 0, 0, "#6fc8e8",
+                "맞닿은 가공 설비의 열을 초당 6 식힘. 오버클럭·화염 재료 라인의 과열을 막는다", false, 60);
+            Add("MAC_OVERCLOCK", "오버클럭 태엽", "", MachineKind.Overclock, BuildCategory.Processing, BuildZone.Factory, one, 2, 40, 0, 0, "#d9a83a",
+                "가공 설비를 클릭해 부착: 처리 속도 150%, 발열 2배. 열 100이면 화재(6초 정지·재료 소실·열 전파). 다시 클릭하면 분리", false, 90);
             // 상점
             Add("MAC_SHELF", "나무 진열대", "진열대", MachineKind.Shelf, BuildCategory.Shop, BuildZone.Shop, one, 1, 30, 0, 0, "#8a5a32",
                 "포션 4개 진열. 뒤쪽(위)에서 벨트로 재고 자동 보충. 클릭해 가격 배율 변경", param: 4f);

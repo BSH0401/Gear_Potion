@@ -129,6 +129,31 @@ namespace GearPotion
                 return;
             }
 
+            // 오버클럭 태엽: 가공 설비를 클릭해 부착/분리 (그리드에 놓는 설비가 아님)
+            if (Selected.kind == MachineKind.Overclock)
+            {
+                var target = grid.At(cell) as Processor;
+                if (target == null) { GhostReason = "가공 설비 위에 클릭"; return; }
+                bool canAttach = target.overclocked || Economy.CanAfford(Selected.cost);
+                ShowGhost(target.cells, target.overclocked ? new Color(1f, 0.6f, 0.3f, 0.45f) : canAttach ? new Color(1f, 0.85f, 0.3f, 0.45f) : new Color(1f, 0.3f, 0.25f, 0.45f), -1, default);
+                GhostReason = target.overclocked ? "클릭하면 태엽 분리 (75% 환불)" : canAttach ? null : "골드 부족";
+                if (!mouse.leftButton.wasPressedThisFrame) return;
+                if (target.overclocked)
+                {
+                    target.SetOverclock(false);
+                    Economy.Earn(Mathf.RoundToInt(Selected.cost * RefundRate), LedgerEntry.Refund, false);
+                    Sfx.Play(SfxId.Remove, 0.6f);
+                }
+                else if (Economy.TrySpend(Selected.cost, LedgerEntry.Construction))
+                {
+                    target.SetOverclock(true);
+                    Fx.Float(target.center, "오버클럭!", new Color(1f, 0.8f, 0.3f));
+                    Sfx.Play(SfxId.Place, 0.8f);
+                }
+                else { Toasts.Show($"골드가 부족합니다 ({Selected.cost}G)", new Color(1f, 0.5f, 0.4f)); Sfx.Play(SfxId.Error); }
+                return;
+            }
+
             // 배치 미리보기
             var origin = cell;
             Building.Footprint(Selected, origin, Rotation, footprint, out var outCell, out _);
@@ -219,6 +244,11 @@ namespace GearPotion
                 return;
             }
             int refund = Mathf.RoundToInt(b.def.cost * RefundRate);
+            if (b is Processor { overclocked: true })
+            {
+                var gear = GameManager.Db.Machine(MachineKind.Overclock);
+                if (gear) refund += Mathf.RoundToInt(gear.cost * RefundRate);
+            }
             GameManager.Grid.Remove(b);
             Economy.Earn(refund, LedgerEntry.Refund, false);
             Sfx.Play(SfxId.Remove, 0.6f);

@@ -210,7 +210,7 @@ namespace GearPotion
             bool paused = GameManager.Instance.InGame;
             if (paused) GameManager.Instance.PushModal();
             helpPausing = paused;
-            var p = UIFactory.Rect("Panel", o, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1300f, 880f));
+            var p = UIFactory.Rect("Panel", o, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1300f, 990f));
             UIFactory.PanelBg(p, UIFactory.PanelLight);
             UIFactory.Label(UIFactory.Rect("Head", p, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(1200f, 56f)),
                 "<b>공방 운영 안내</b>", 38, UIFactory.Accent);
@@ -225,6 +225,10 @@ namespace GearPotion
                 "· 원액 설비의 출력 칸에 배관을 놓으면 이어진 배관 전체(네트워크)를 타고 닿아 있는 여과기·증류탑·가마·병입기로 공급됩니다.\n" +
                 "· 배관은 벨트 위에 겹쳐 놓을 수 있습니다(교차). 설비끼리 바로 맞닿아 있으면 배관 없이도 직접 넘어갑니다.\n" +
                 "· 원심 여과기는 왼쪽 측면으로 슬러지 배출 → 폐기통(5G)/슬라임 배양조. 벨트는 벽을 지나 진열대에 꽂힙니다.\n\n" +
+                "<b><color=#ffd27a>과열 · 냉각</color></b>\n" +
+                "· 가동 중인 가공 설비는 열이 쌓이고(오른쪽 게이지), 화 원소 재료는 더 뜨겁습니다. 기본 방열 5/s.\n" +
+                "· 오버클럭 태엽(클릭해 부착): 속도 150%·발열 2배. 열 100이면 화재 — 6초 정지, 재료 소실, 이웃에 열 전파.\n" +
+                "· 얼음 정령석을 맞닿게 두면 -6/s, 물 원소 원액이 흐르는 배관(냉각수)이 닿으면 -5/s.\n\n" +
                 "<b><color=#ffd27a>연금술</color></b>\n" +
                 "· 모든 재료는 화·수·풍·지·에테르 원소와 불순물(%)을 가집니다. 병입기에서 원소 조건으로 포션이 결정됩니다.\n" +
                 "· 분쇄: 주 원소 x1.3, 불순물 +10%p · 여과: 불순물 -20%p · 증류: 주 원소만 남기고 x1.5 · 합성 가마: 원액 2개 합산\n" +
@@ -236,7 +240,7 @@ namespace GearPotion
                 "· 마력(MP) 소비가 공급을 넘으면 모든 설비가 느려집니다. 마나 코어를 추가하세요. (하루 유지비 1G/MP)\n" +
                 "· 별점이 높을수록 다음 날 손님이 늘어납니다. 암시장 거래는 3배 가격이지만 의심 수치 100이면 검문 벌금!";
             UIFactory.Label(UIFactory.Rect("Body", p, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(0f, -90f), new Vector2(1200f, 700f)),
-                text, 22, UIFactory.TextColor, TextAnchor.UpperLeft, true);
+                text, 20, UIFactory.TextColor, TextAnchor.UpperLeft, true);
             UIFactory.Button(p, "닫기", new Vector2(0.5f, 0f), new Vector2(0f, 50f), new Vector2(260f, 60f), CloseHelp, 26);
         }
 

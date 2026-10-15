@@ -47,6 +47,16 @@ namespace GearPotion
             Place(grid, "MAC_BELT", 18, 6, 1);
             Place(grid, "MAC_BELT", 18, 7, 1);
             Place(grid, "MAC_PIPE", 18, 6, 0);
+
+            // 과열 예시: 화염 라인 추출기는 냉각 없이 오버클럭 → 화재, 합성 가마는 오버클럭 + 얼음 정령석으로 안정
+            Overclock(grid, 2, 4);
+            Overclock(grid, 20, 6);
+            Place(grid, "MAC_COOLER", 23, 7, 0);
+        }
+
+        static void Overclock(FactoryGrid grid, int x, int y)
+        {
+            if (grid.At(new Vector2Int(x, y)) is Processor p) p.SetOverclock(true);
         }
 
         static int Ing(GameDatabase db, string id) => db.ingredients.IndexOf(db.Ingredient(id));

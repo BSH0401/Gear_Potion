@@ -30,6 +30,7 @@ namespace GearPotion
     {
         public string id;
         public int x, y, dir, config;
+        public int oc;
     }
 
     public static class SaveSystem
@@ -56,7 +57,7 @@ namespace GearPotion
                 discovered = new List<string>(Discoveries.Known),
             };
             foreach (var b in grid.buildings)
-                d.buildings.Add(new BuildingSave { id = b.def.id, x = b.origin.x, y = b.origin.y, dir = b.dir, config = b.config });
+                d.buildings.Add(new BuildingSave { id = b.def.id, x = b.origin.x, y = b.origin.y, dir = b.dir, config = b.config, oc = b is Processor { overclocked: true } ? 1 : 0 });
             return d;
         }
 
@@ -99,7 +100,9 @@ namespace GearPotion
                 var def = GameManager.Db.Machine(b.id);
                 if (!def) continue;
                 var origin = new Vector2Int(b.x, b.y);
-                if (grid.CanPlace(def, origin, b.dir, out _)) grid.Place(def, origin, b.dir, b.config);
+                if (!grid.CanPlace(def, origin, b.dir, out _)) continue;
+                var placed = grid.Place(def, origin, b.dir, b.config);
+                if (b.oc != 0 && placed is Processor p) p.SetOverclock(true);
             }
             if (d.version < 2) MigrateV1(grid);
         }

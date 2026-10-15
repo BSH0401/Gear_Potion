@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GearPotion
 {
-    public enum BuildingStatus { Idle, Working, NoInput, Blocked, LowPower, NoGold, Off }
+    public enum BuildingStatus { Idle, Working, NoInput, Blocked, LowPower, NoGold, Off, OnFire }
 
     public static class Dir
     {
@@ -64,6 +64,7 @@ namespace GearPotion
             MachineKind.ManaCore => new ManaCore(),
             MachineKind.Counter => new Counter(),
             MachineKind.Pipe => new Pipe(),
+            MachineKind.Cooler => new Cooler(),
             _ => new Processor(),
         };
 
@@ -209,6 +210,7 @@ namespace GearPotion
             BuildingStatus.LowPower => "마력 부족",
             BuildingStatus.NoGold => "골드 부족",
             BuildingStatus.Off => "정지",
+            BuildingStatus.OnFire => "화재!",
             _ => "대기",
         };
 
@@ -585,7 +587,7 @@ namespace GearPotion
     // ═══════════════════════════════ 가공 설비 ═══════════════════════════════
 
     /// <summary>분쇄기·추출기·여과기·증류탑·합성 가마·병입기·슬라임 배양조 공용 처리기.</summary>
-    public class Processor : Building
+    public partial class Processor : Building
     {
         const int InCap = 2, OutCap = 2;
         readonly List<Item> input = new();
@@ -640,6 +642,9 @@ namespace GearPotion
 
         public override void Tick(float dt, float power)
         {
+            if (TickFire(dt)) return;
+            UpdateHeat(dt);
+            if (OnFire) return;
             // 1) 배출 대기열 비우기
             for (int i = 0; i < output.Count;)
             {
@@ -652,7 +657,7 @@ namespace GearPotion
             if (input.Count < Need) { Stop(BuildingStatus.NoInput); return; }
             working = true;
             status = power < 0.999f ? BuildingStatus.LowPower : BuildingStatus.Working;
-            progress += dt * power / def.processTime;
+            progress += dt * power * SpeedMultiplier / def.processTime;
             if (progress < 1f) return;
             progress = 0f;
             Process();
@@ -743,7 +748,7 @@ namespace GearPotion
 
         public override string Info()
         {
-            var s = base.Info() + $"\n투입 {input.Count} · 배출 대기 {output.Count} · 처리 {def.processTime:0.#}초 · 누적 {made}";
+            var s = base.Info() + $"\n투입 {input.Count} · 배출 대기 {output.Count} · 처리 {def.processTime / SpeedMultiplier:0.#}초 · 누적 {made}" + HeatInfo();
             if (ProducesLiquid) s += "\n<size=22><color=#8fd0ff>출력 포트(▶)에 배관을 연결하면 원액이 배관으로 나갑니다</color></size>";
             if (def.kind is MachineKind.Filter or MachineKind.Distiller or MachineKind.Cauldron or MachineKind.Bottler)
                 s += "\n<size=22><color=#8fd0ff>인접한 배관에서 원액을 받습니다</color></size>";

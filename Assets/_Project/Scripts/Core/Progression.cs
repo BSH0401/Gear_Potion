@@ -84,6 +84,11 @@ namespace GearPotion
             new("분쇄기로 '화염 활력제' 만들기", () => Known("POT_FIRE")),
             new("연구: 원심 불순물 여과기 해금", () => Research.IsUnlocked(GameManager.Db.Machine("MAC_FILTER"))),
             new("A등급 이상 포션 만들기", () => Discoveries.BestGrade >= (int)Grade.A),
+            new("오버클럭 태엽을 달고 얼음 정령석으로 식히기", () =>
+            {
+                foreach (var p in GameManager.Grid.All<Processor>()) if (p.overclocked && p.Cooling > Processor.PassiveCooling) return true;
+                return false;
+            }),
             new("마도 합성 가마로 '고순도 마나 엘릭서' 만들기", () => Known("POT_MANA")),
             new("누적 매출 5,000G 달성", () => Discoveries.TotalRevenue >= 5000),
             new("'폭풍 질주 포션' 만들기", () => Known("POT_STORM")),

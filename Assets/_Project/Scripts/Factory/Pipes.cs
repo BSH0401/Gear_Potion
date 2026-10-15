@@ -91,6 +91,7 @@ namespace GearPotion
             s += network.consumers.Count == 0
                 ? "\n<color=#ff9a8a>원액을 받을 설비가 연결되지 않음</color>"
                 : $"\n공급 대상: {string.Join(", ", network.ConsumerNames())}";
+            if (network.IsCoolant) s += "\n<color=#8fe8ff>냉각수 배관: 맞닿은 설비를 초당 5 식힘</color>";
             var next = network.Peek();
             if (next != null) s += $"\n<size=21><color=#ccc>다음: {next.Name} ({next.el.Describe()}, 불순물 {next.impurity:0}%)</color></size>";
             s += "\n<size=21><color=#aaa>설비의 출력 포트(▶) 칸에 배관을 놓으면 원액이 들어오고,\n배관에 닿은 여과기·증류탑·가마·병입기로 자동 공급됩니다.</color></size>";
@@ -127,6 +128,16 @@ namespace GearPotion
         float TransitTime => 0.2f + 0.05f * pipes.Count;
 
         public Item Peek() => packets.Count > 0 ? packets[0].item : null;
+
+        /// <summary>물 원소가 주성분인 원액이 흐르면 냉각수 배관으로 동작한다.</summary>
+        public bool IsCoolant
+        {
+            get
+            {
+                foreach (var p in packets) if (p.item.el.MainIndex == (int)Element.Aqua) return true;
+                return false;
+            }
+        }
 
         public bool TryInsert(Item item, Building source)
         {

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507fa87db01741744a181d1a90f95a94, type: 3}
+  m_Name: MAC_OVERCLOCK
+  m_EditorClassIdentifier: Assembly-CSharp::GearPotion.MachineSO
+  id: MAC_OVERCLOCK
+  displayName: "\uC624\uBC84\uD074\uB7ED \uD0DC\uC5FD"
+  shortName: 
+  kind: 18
+  category: 2
+  zone: 0
+  size: {x: 1, y: 1}
+  tier: 2
+  cost: 40
+  mana: 0
+  processTime: 0
+  param: 0
+  priceBonus: 1
+  color: {r: 0.8509804, g: 0.65882355, b: 0.22745098, a: 1}
+  description: "\uAC00\uACF5 \uC124\uBE44\uB97C \uD074\uB9AD\uD574 \uBD80\uCC29:
+    \uCC98\uB9AC \uC18D\uB3C4 150%, \uBC1C\uC5F4 2\uBC30. \uC5F4 100\uC774\uBA74
+    \uD654\uC7AC(6\uCD08 \uC815\uC9C0\xB7\uC7AC\uB8CC \uC18C\uC2E4\xB7\uC5F4 \uC804\uD30C).
+    \uB2E4\uC2DC \uD074\uB9AD\uD558\uBA74 \uBD84\uB9AC"
+  unlockedByDefault: 0
+  researchCost: 90
+  removable: 1
